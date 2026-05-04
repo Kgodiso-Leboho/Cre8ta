@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/Input";
 import { Icon } from "../components/ui/Icon";
+import { mockUsers, mockBrands, getAllUsers, findUserByEmail, createUser } from "../data/mockData";
 
 export const AuthPage = ({ mode = "login", onNavigate }) => {
   const [step, setStep] = useState(mode === "register" ? 0 : 1);
@@ -9,25 +10,202 @@ export const AuthPage = ({ mode = "login", onNavigate }) => {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState(() => {
+    // Initialize users from localStorage or use mock data
+    const savedUsers = localStorage.getItem("cre8ta_users");
+    if (savedUsers) {
+      return JSON.parse(savedUsers);
+    }
+    // Convert mockUsers object to array
+    const initialUsers = [
+      {
+        id: "creator_tshepiso",
+        name: "Tshepiso Malema",
+        email: "tshepiso@cre8ta.com",
+        password: "password123",
+        role: "creator",
+        avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+        bio: "Joburg-based fashion and lifestyle creator.",
+        location: "Johannesburg",
+        joinedDate: "2024-02-10",
+        verified: true
+      },
+      {
+        id: "creator_lesley",
+        name: "lesley Zibu",
+        email: "lesley@cre8ta.com",
+        password: "password123",
+        role: "creator",
+        avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+        bio: "Pretoria-based content creator celebrating SA culture.",
+        location: "Pretoria",
+        joinedDate: "2024-03-05",
+        verified: true
+      },
+      {
+        id: "brand_bathu",
+        name: "Bathu",
+        email: "collab@bathu.co.za",
+        password: "brand123",
+        role: "brand",
+        avatar: "https://logo.clearbit.com/bathu.co.za",
+        bio: "Premium South African sneaker brand.",
+        location: "Johannesburg",
+        joinedDate: "2024-01-15",
+        verified: true
+      },
+      {
+        id: "brand_galxboy",
+        name: "GalXBoy",
+        email: "partners@galxboy.com",
+        password: "brand123",
+        role: "brand",
+        avatar: "https://logo.clearbit.com/galxboy.com",
+        bio: "Urban streetwear brand from Soweto.",
+        location: "Soweto",
+        joinedDate: "2024-01-20",
+        verified: true
+      }
+    ];
+    localStorage.setItem("cre8ta_users", JSON.stringify(initialUsers));
+    return initialUsers;
+  });
+
+  // Helper functions
+  const findUser = (email, password) => {
+    const user = users.find(u => u.email === email && u.password === password);
+    if (user) {
+      // Store current user in localStorage
+      localStorage.setItem("cre8ta_current_user", JSON.stringify(user));
+      return user;
+    }
+    return null;
+  };
+
+  const findUserByEmailOnly = (email) => {
+    return users.find(u => u.email === email);
+  };
+
+  const registerUser = (userData) => {
+    // Check if email already exists
+    if (findUserByEmailOnly(userData.email)) {
+      throw new Error("Email already registered");
+    }
+    
+    const newUser = {
+      id: `${userData.role}_${Date.now()}`,
+      name: userData.name,
+      email: userData.email,
+      password: userData.password,
+      role: userData.role,
+      avatar: userData.role === "creator" 
+        ? "https://randomuser.me/api/portraits/lego/1.jpg" 
+        : "https://logo.clearbit.com/example.com",
+      bio: userData.role === "creator" 
+        ? "New creator on Cre8ta platform" 
+        : "New brand on Cre8ta platform",
+      location: userData.role === "creator" ? "South Africa" : "",
+      joinedDate: new Date().toISOString().split('T')[0],
+      verified: false,
+      metrics: userData.role === "creator" ? {
+        followers: 0,
+        engagement: 0,
+        avgRate: 0,
+        totalEarnings: 0,
+        monthlyViews: 0,
+        activeCampaigns: 0
+      } : {
+        activeCampaigns: 0,
+        totalSpend: 0,
+        avgEngagement: 0,
+        totalApplications: 0
+      }
+    };
+    
+    const updatedUsers = [...users, newUser];
+    setUsers(updatedUsers);
+    localStorage.setItem("cre8ta_users", JSON.stringify(updatedUsers));
+    localStorage.setItem("cre8ta_current_user", JSON.stringify(newUser));
+    return newUser;
+  };
 
   const validate = () => {
     const e = {};
     if (step === 1 && !form.email) e.email = "Email is required";
     if (step === 1 && !form.password) e.password = "Password is required";
-    if (step === 1 && form.password && form.password.length < 8) e.password = "Must be at least 8 characters";
+    if (step === 1 && form.password && form.password.length < 6) e.password = "Must be at least 6 characters";
     if (step === 1 && mode === "register" && !form.name) e.name = "Full name is required";
+    if (step === 1 && mode === "register" && form.email && !isValidEmail(form.email)) e.email = "Invalid email format";
     return e;
+  };
+
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const handleLogin = () => {
+    const user = findUser(form.email, form.password);
+    if (user) {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        if (user.role === "brand") {
+          onNavigate("brand-dashboard");
+        } else {
+          onNavigate("creator-dashboard");
+        }
+      }, 800);
+    } else {
+      setErrors({ general: "Invalid email or password" });
+    }
+  };
+
+  const handleRegister = () => {
+    try {
+      const newUser = registerUser({
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        role: role
+      });
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        if (newUser.role === "brand") {
+          onNavigate("brand-dashboard");
+        } else {
+          onNavigate("creator-dashboard");
+        }
+      }, 800);
+    } catch (error) {
+      setErrors({ general: error.message });
+    }
   };
 
   const handleSubmit = () => {
     const e = validate();
-    if (Object.keys(e).length) { setErrors(e); return; }
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      if (mode === "login") onNavigate(role === "brand" ? "brand-dashboard" : "creator-dashboard");
-      else onNavigate(role === "brand" ? "brand-dashboard" : "creator-dashboard");
-    }, 1200);
+    if (Object.keys(e).length) { 
+      setErrors(e); 
+      return; 
+    }
+    
+    if (mode === "login") {
+      handleLogin();
+    } else {
+      handleRegister();
+    }
+  };
+
+  // Test credentials helper
+  const fillTestCredentials = (userType) => {
+    if (userType === "creator") {
+      setForm({ name: "", email: "tshepiso@cre8ta.com", password: "password123" });
+      setRole("creator");
+    } else if (userType === "brand") {
+      setForm({ name: "", email: "collab@bathu.co.za", password: "brand123" });
+      setRole("brand");
+    }
+    setErrors({});
   };
 
   return (
@@ -93,8 +271,11 @@ export const AuthPage = ({ mode = "login", onNavigate }) => {
             </div>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+              {/* Show test credentials hint for login */}
+              {mode === "login"}
+
               {mode === "register" && (
-                <Input label="Full name" placeholder="Amara Osei" value={form.name}
+                <Input label="Full name" placeholder="e.g., Tshepiso Malema" value={form.name}
                   onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                   error={errors.name} />
               )}
@@ -104,11 +285,20 @@ export const AuthPage = ({ mode = "login", onNavigate }) => {
               <Input label="Password" type="password" placeholder="••••••••" value={form.password}
                 onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
                 error={errors.password} />
+              
+              {/* Show general error */}
+              {errors.general && (
+                <div style={{ fontSize: 12, color: "#FF006E", textAlign: "center", padding: 8, background: "rgba(255,0,110,0.1)", borderRadius: 8 }}>
+                  {errors.general}
+                </div>
+              )}
+
               {mode === "login" && (
                 <div style={{ textAlign: "right", marginTop: -8 }}>
                   <span style={{ fontSize: 13, color: "var(--gold-dark)", cursor: "pointer", fontWeight: 500 }}>Forgot password?</span>
                 </div>
               )}
+              
               <Button variant="gold" onClick={handleSubmit} disabled={loading} style={{ justifyContent: "center", marginTop: 4 }}>
                 {loading ? (
                   <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -116,15 +306,23 @@ export const AuthPage = ({ mode = "login", onNavigate }) => {
                   </span>
                 ) : mode === "login" ? "Sign in" : "Create account"}
               </Button>
+              
               {mode === "register" && step === 1 && (
                 <button onClick={() => setStep(0)} style={{ background: "none", border: "none", color: "var(--muted)", fontSize: 13, cursor: "pointer", textAlign: "center" }}>
                   ← Change role
                 </button>
               )}
+              
               <div style={{ textAlign: "center", paddingTop: 8, borderTop: "1px solid var(--border)", fontSize: 13, color: "var(--muted)" }}>
                 {mode === "login" ? "Don't have an account? " : "Already have an account? "}
                 <span style={{ color: "var(--gold-dark)", fontWeight: 500, cursor: "pointer" }}
-                  onClick={() => onNavigate(mode === "login" ? "register" : "login")}>
+                  onClick={() => {
+                    onNavigate(mode === "login" ? "register" : "login");
+                    setStep(mode === "login" ? 0 : 1);
+                    setRole("");
+                    setForm({ name: "", email: "", password: "" });
+                    setErrors({});
+                  }}>
                   {mode === "login" ? "Sign up" : "Sign in"}
                 </span>
               </div>
