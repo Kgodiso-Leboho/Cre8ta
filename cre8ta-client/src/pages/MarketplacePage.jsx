@@ -252,7 +252,7 @@ export const MarketplacePage = ({ onNavigate }) => {
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
                 <div>
                   <div style={{ display: "flex", gap: 8, marginBottom: 10, flexWrap: "wrap" }}>
-                    <Badge variant="pink">{selectedCampaign.category}</Badge>
+                    <Badge variant="orange">{selectedCampaign.category}</Badge>
                     <Badge variant="cyan">{selectedCampaign.platform}</Badge>
                   </div>
                   <h2 style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 800, marginBottom: 4 }}>{selectedCampaign.title}</h2>
@@ -272,14 +272,14 @@ export const MarketplacePage = ({ onNavigate }) => {
                 ].map(([l, v]) => (
                   <div key={l} style={{ background: "var(--surface)", borderRadius: 10, padding: 14 }}>
                     <div style={{ fontSize: 11, color: "var(--muted)", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.06em" }}>{l}</div>
-                    <div style={{ fontWeight: 700, fontSize: 14, color: "#FF006E" }}>{v}</div>
+                    <div style={{ fontWeight: 700, fontSize: 14, color: "#FF6B35" }}>{v}</div>
                   </div>
                 ))}
               </div>
               
               <div>
                 <h4 style={{ fontWeight: 600, marginBottom: 8, fontSize: 14 }}>Campaign Brief</h4>
-                <p style={{ color: "var(--muted)", fontSize: 14, lineHeight: 1.75 }}>{selectedCampaign.desc}</p>
+                <p style={{ color: "var(--muted)", fontSize: 14, lineHeight: 1.75 }}>{selectedCampaign.desc || selectedCampaign.description || "No description available"}</p>
               </div>
               
               <div>
@@ -287,8 +287,8 @@ export const MarketplacePage = ({ onNavigate }) => {
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                   {selectedCampaign.requirements.map((r, i) => (
                     <div key={i} style={{ display: "flex", gap: 10, alignItems: "center", fontSize: 14 }}>
-                      <div style={{ width: 20, height: 20, borderRadius: "50%", background: "rgba(255,0,110,.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                        <Icon name="check" size={11} color="#FF006E" />
+                      <div style={{ width: 20, height: 20, borderRadius: "50%", background: "rgba(255,107,53,.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                        <Icon name="check" size={11} color="#FF6B35" />
                       </div>
                       {r}
                     </div>
@@ -324,7 +324,7 @@ export const MarketplacePage = ({ onNavigate }) => {
           <p style={{ color: "var(--muted)", fontSize: 14 }}>Browse and apply to brand campaigns from top South African brands.</p>
         </div>
         {currentUser?.role !== "creator" && (
-          <Badge variant="pink" icon="sparkle">Creators: Apply to earn!</Badge>
+          <Badge variant="orange" icon="sparkle">Creators: Apply to earn!</Badge>
         )}
       </div>
 
@@ -384,7 +384,7 @@ export const MarketplacePage = ({ onNavigate }) => {
           Showing {filteredCampaigns.length} of {campaigns.length} campaigns
         </div>
         {appliedFilters && (
-          <Badge variant="pink" icon="check">Filters Applied</Badge>
+          <Badge variant="orange" icon="check">Filters Applied</Badge>
         )}
       </div>
 
@@ -395,7 +395,7 @@ export const MarketplacePage = ({ onNavigate }) => {
             onClick={() => setSelectedCampaign(c)}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
               <div>
-                <div style={{ fontSize: 12, fontWeight: 600, color: "#FF006E", marginBottom: 6 }}>{c.brand}</div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: "#FF6B35", marginBottom: 6 }}>{c.brand}</div>
                 <h3 style={{ fontFamily: "var(--font-display)", fontSize: 17, fontWeight: 700, lineHeight: 1.3 }}>{c.title}</h3>
               </div>
               {appliedCampaigns.includes(c.id) && (
@@ -404,20 +404,20 @@ export const MarketplacePage = ({ onNavigate }) => {
             </div>
             
             <p style={{ color: "var(--muted)", fontSize: 13, lineHeight: 1.65, marginBottom: 16 }}>
-              {c.desc.substring(0, 100)}...
+              {c.desc ? c.desc.substring(0, 100) : (c.description ? c.description.substring(0, 100) : "No description available")}...
             </p>
             
             <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 16 }}>
-              <Badge variant="pink">{c.category}</Badge>
+              <Badge variant="orange">{c.category}</Badge>
               <Badge variant="cyan">{c.platform}</Badge>
-              {c.tags.slice(0, 2).map(t => (
+              {c.tags && c.tags.slice(0, 2).map(t => (
                 <Badge key={t} variant="gray">{t}</Badge>
               ))}
             </div>
             
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 14, borderTop: "1px solid var(--border)" }}>
               <div>
-                <div style={{ fontSize: 15, fontWeight: 700, color: "#FF006E" }}>{c.budget}</div>
+                <div style={{ fontSize: 15, fontWeight: 700, color: "#FF6B35" }}>{c.budget}</div>
                 <div style={{ fontSize: 11, color: "var(--muted)" }}>Due {c.deadline}</div>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "var(--muted)" }}>

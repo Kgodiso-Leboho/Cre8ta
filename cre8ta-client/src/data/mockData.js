@@ -1,7 +1,7 @@
 // Mock data for Cre8ta Creator Platform - South African Edition
-import tshepisoImg from "../assets/creators/tshepiso-malema.jpg";
-import lesleyImg from "../assets/creators/lesley-zibu.jpg";
-import bathuLogo from "../assets/brands/Bathu.jpg";
+const tshepisoImg = "/public/creators/tshepiso-malema.jpg";
+const lesleyImg = "/public/creators/lesley-zibu.jpg";
+const bathuLogo = "/public/brands/Bathu.jpg";
 
 // User Profiles - South African Creators
 export const mockUsers = {
@@ -10,8 +10,8 @@ export const mockUsers = {
     name: "Tshepiso Malema",
     email: "tshepiso@cre8ta.com",
     role: "creator",
-    avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-    coverImage: "tshepisoImg",
+    avatar: tshepisoImg,
+    coverImage: tshepisoImg,
     bio: "Joburg-based fashion and lifestyle creator. Showing you how to style local brands with international flair. 🇿🇦",
     location: "Johannesburg, South Africa",
     niches: ["Fashion", "Streetwear", "Lifestyle", "Sneakers"],
@@ -43,8 +43,8 @@ export const mockUsers = {
     name: "Lesley Zibu",
     email: "lesley@cre8ta.com",
     role: "creator",
-    avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-    coverImage: "lesleyImg",
+    avatar: lesleyImg,
+    coverImage: lesleyImg,
     bio: "Pretoria-based content creator. Celebrating South African culture, music, and fashion. Let's collab!",
     location: "Pretoria, South Africa",
     niches: ["Lifestyle", "Music", "Fashion", "Vlogs"],
@@ -77,6 +77,7 @@ export const mockUsers = {
     email: "linda@cre8ta.com",
     role: "creator",
     avatar: "https://randomuser.me/api/portraits/men/67.jpg",
+    coverImage: "https://randomuser.me/api/portraits/men/67.jpg",   
     location: "Durban, South Africa",
     niches: ["Fitness", "Health", "Lifestyle"],
     metrics: {
@@ -249,11 +250,11 @@ export const mockCampaigns = [
     id: "camp_001",
     brand: "Bathu",
     brandId: "brand_bathu",
-    title: "Bathu Summer Drop 2025",
+    title: "Bathu Summer Drop 2026",
     budget: "R15,000 - R25,000",
     category: "Fashion",
     platform: "Instagram",
-    deadline: "Dec 15, 2025",
+    deadline: "Dec 15, 2026",
     description: "We're looking for authentic creators to showcase our new summer sneaker collection. Show us how you style Bathu with your everyday fits.",
     requirements: [
       "10K+ followers minimum",
@@ -266,7 +267,7 @@ export const mockCampaigns = [
     deliverables: 3,
     payment: "R18,000",
     status: "active",
-    postedDate: "Nov 1, 2025"
+    postedDate: "Nov 1, 2026"
   },
   {
     id: "camp_002",
@@ -276,7 +277,7 @@ export const mockCampaigns = [
     budget: "R10,000 - R18,000",
     category: "Streetwear",
     platform: "TikTok",
-    deadline: "Dec 30, 2025",
+    deadline: "Dec 30, 2026",
     description: "Celebrate South African street culture with our new heritage drop. Create engaging TikTok content that shows off our latest pieces.",
     requirements: [
       "20K+ TikTok followers",
@@ -299,7 +300,7 @@ export const mockCampaigns = [
     budget: "R30,000 - R50,000",
     category: "Luxury Fashion",
     platform: "Instagram / YouTube",
-    deadline: "Jan 15, 2026",
+    deadline: "Jun 15, 2026",
     description: "Celebrate heritage through fashion. We want creators who can tell powerful stories through our luxury knitwear collection.",
     requirements: [
       "50K+ followers minimum",
@@ -312,7 +313,7 @@ export const mockCampaigns = [
     deliverables: 3,
     payment: "R40,000",
     status: "active",
-    postedDate: "Nov 10, 2025"
+    postedDate: "Jan 10, 2026"
   },
   {
     id: "camp_004",
@@ -322,7 +323,7 @@ export const mockCampaigns = [
     budget: "R5,000 - R10,000",
     category: "Lifestyle",
     platform: "Instagram",
-    deadline: "Dec 10, 2025",
+    deadline: "May 10, 2026",
     description: "Showcase how Yangas sneakers fit into your daily life. From running errands to casual outings, we want to see real moments.",
     requirements: [
       "5K+ followers",
@@ -335,7 +336,7 @@ export const mockCampaigns = [
     deliverables: 2,
     payment: "R7,500",
     status: "active",
-    postedDate: "Nov 15, 2025"
+    postedDate: "Feb 15, 2026"
   },
   {
     id: "camp_005",
@@ -345,7 +346,7 @@ export const mockCampaigns = [
     budget: "R8,000 - R15,000",
     category: "Art",
     platform: "Instagram / TikTok",
-    deadline: "Jan 5, 2026",
+    deadline: "Jul 5, 2026",
     description: "We want to see your creative process! Customize our sneakers or create art inspired by our brand.",
     requirements: [
       "10K+ followers",
@@ -358,7 +359,7 @@ export const mockCampaigns = [
     deliverables: 2,
     payment: "R11,000",
     status: "active",
-    postedDate: "Nov 8, 2025"
+    postedDate: "Mar 8, 2026"
   },
   {
     id: "camp_006",
@@ -368,7 +369,7 @@ export const mockCampaigns = [
     budget: "R12,000 - R20,000",
     category: "Fitness",
     platform: "TikTok",
-    deadline: "Feb 1, 2026",
+    deadline: "Aug 1, 2026",
     description: "Kick off 2026 with Mzansi Fit! Create fitness content that inspires your audience to get active in our gear.",
     requirements: [
       "15K+ followers",
@@ -381,7 +382,7 @@ export const mockCampaigns = [
     deliverables: 8,
     payment: "R16,000",
     status: "upcoming",
-    postedDate: "Nov 20, 2025"
+    postedDate: "Apr 20, 2026"
   }
 ];
 
@@ -446,6 +447,8 @@ export const mockPortfolio = {
     }
   ]
 };
+
+
 
 // Activity Feed Data
 export const mockActivity = {
@@ -594,6 +597,48 @@ export const mockTestimonials = [
   }
 ];
 
+// Export individual users
+export const tshepisoUser = mockUsers.creator;
+export const lesleyUser = mockUsers.creator2;
+export const lindaUser = mockUsers.creator3;
+export const thandoUser = mockUsers.creator4;
+
+// Export arrays of users
+export const getAllMockUsers = () => {
+  return [
+    mockUsers.creator,
+    mockUsers.creator2,
+    mockUsers.creator3,
+    mockUsers.creator4,
+    mockBrands.brand1,
+    mockBrands.brand2,
+    mockBrands.brand3,
+    mockBrands.brand4,
+    mockBrands.brand5,
+    mockBrands.brand6
+  ];
+};
+
+export const getAllMockBrands = () => {
+  return [
+    mockBrands.brand1,
+    mockBrands.brand2,
+    mockBrands.brand3,
+    mockBrands.brand4,
+    mockBrands.brand5,
+    mockBrands.brand6
+  ];
+};
+
+export const getAllMockCreators = () => {
+  return [
+    mockUsers.creator,
+    mockUsers.creator2,
+    mockUsers.creator3,
+    mockUsers.creator4
+  ];
+};
+
 // Helper function to get random mock data
 export const getRandomCampaign = () => {
   return mockCampaigns[Math.floor(Math.random() * mockCampaigns.length)];
@@ -691,9 +736,18 @@ export const createUser = (userData) => {
   return newUser;
 };
 
+// In mockData.js, verify this function:
 export const getCurrentUser = () => {
   const currentUser = localStorage.getItem("cre8ta_current_user");
-  return currentUser ? JSON.parse(currentUser) : null;
+  if (currentUser) {
+    try {
+      return JSON.parse(currentUser);
+    } catch (e) {
+      console.error("Error parsing user:", e);
+      return null;
+    }
+  }
+  return null;
 };
 
 export const logoutUser = () => {
@@ -715,6 +769,25 @@ export const updateUser = (userId, updates) => {
     return users[index];
   }
   return null;
+};
+
+// Add this function to mockData.js
+export const getUserAvatar = (user) => {
+  if (user?.avatar) return user.avatar;
+  
+  // Default avatars based on role
+  if (user?.role === "creator") {
+    const defaultAvatars = [
+      "https://randomuser.me/api/portraits/men/32.jpg",
+      "https://randomuser.me/api/portraits/women/44.jpg",
+      "https://randomuser.me/api/portraits/men/67.jpg",
+      "https://randomuser.me/api/portraits/women/89.jpg"
+    ];
+    const index = user?.name?.charCodeAt(0) % defaultAvatars.length || 0;
+    return defaultAvatars[index];
+  }
+  
+  return "https://logo.clearbit.com/placeholder.com";
 };
 
 // Platform integrations

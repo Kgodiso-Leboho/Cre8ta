@@ -217,7 +217,7 @@ export const CreatorDashboard = ({ section, onSection, onNavigate }) => {
     marketplace: <MarketplacePage onNavigate={onNavigate} />,
     "ai-tools": <AIToolsPage />,
     analytics: <AnalyticsSection />,
-    earnings: <EarningsSection />,
+   earnings: <EarningsSection onNavigate={onNavigate} />
   };
 
   if (!currentUser) {

@@ -4,21 +4,25 @@ import { Badge } from "../components/ui/Badge";
 import { Avatar } from "../components/ui/Avatar";
 import { Icon } from "../components/ui/Icon";
 import { getCurrentUser } from "../data/mockData";
+import { EditProfile } from "../components/EditProfile";
 
 export const CreatorProfilePage = ({ isOwner = false, onNavigate, creatorId }) => {
   const [activeTab, setActiveTab] = useState("portfolio");
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showEditProfile, setShowEditProfile] = useState(false);
+  const [userData, setUserData] = useState(null);
   
   useEffect(() => {
     const user = getCurrentUser();
     setCurrentUser(user);
+    setUserData(user);
     setLoading(false);
   }, []);
 
   // Check if we're viewing Tshepiso or Lesley
-  const isTshepiso = currentUser?.name === "Tshepiso Malema" || creatorId === "tshepiso";
-  const isLesley = currentUser?.name === "Lesley Zibu" || creatorId === "Lesley";
+  const isTshepiso = userData?.name === "Tshepiso Malema" || creatorId === "tshepiso";
+  const isLesley = userData?.name === "Lesley Zibu" || creatorId === "Lesley";
   
   // Portfolio data based on creator
   const getPortfolio = () => {
@@ -53,10 +57,10 @@ export const CreatorProfilePage = ({ isOwner = false, onNavigate, creatorId }) =
         followers: "185K",
         engagement: "7.2%",
         avgRate: "R950",
-        bio: "Joburg-based fashion and lifestyle creator. Showing you how to style local brands with international flair. 🇿🇦",
-        location: "Johannesburg, South Africa",
-        niches: ["Fashion", "Streetwear", "Lifestyle", "Sneakers"],
-        name: "Tshepiso Malema",
+        bio: userData?.bio || "Joburg-based fashion and lifestyle creator. Showing you how to style local brands with international flair. 🇿🇦",
+        location: userData?.location || "Johannesburg, South Africa",
+        niches: userData?.niches || ["Fashion", "Streetwear", "Lifestyle", "Sneakers"],
+        name: userData?.name || "Tshepiso Malema",
         tagline: "Fashion & Streetwear Creator"
       };
     } else if (isLesley) {
@@ -64,23 +68,35 @@ export const CreatorProfilePage = ({ isOwner = false, onNavigate, creatorId }) =
         followers: "142K",
         engagement: "8.1%",
         avgRate: "R750",
-        bio: "Pretoria-based content creator. Celebrating South African culture, music, and fashion. Let's collab! ✨",
-        location: "Pretoria, South Africa",
-        niches: ["Lifestyle", "Music", "Fashion", "Vlogs"],
-        name: "Lesley Zibu",
+        bio: userData?.bio || "Pretoria-based content creator. Celebrating South African culture, music, and fashion. Let's collab! ✨",
+        location: userData?.location || "Pretoria, South Africa",
+        niches: userData?.niches || ["Lifestyle", "Music", "Fashion", "Vlogs"],
+        name: userData?.name || "Lesley Zibu",
         tagline: "Lifestyle & Culture Creator"
       };
     }
     return {
-      followers: "0",
-      engagement: "0%",
-      avgRate: "R0",
-      bio: "New creator on Cre8ta. Ready to collaborate and create amazing content! 🚀",
-      location: "South Africa",
-      niches: ["Content Creation"],
-      name: currentUser?.name || "Creator",
+      followers: userData?.metrics?.followers ? `${userData.metrics.followers.toLocaleString()}K` : "0",
+      engagement: userData?.metrics?.engagement ? `${userData.metrics.engagement}%` : "0%",
+      avgRate: userData?.metrics?.avgRate ? `R${userData.metrics.avgRate}` : "R0",
+      bio: userData?.bio || "New creator on Cre8ta. Ready to collaborate and create amazing content! 🚀",
+      location: userData?.location || "South Africa",
+      niches: userData?.niches || ["Content Creation"],
+      name: userData?.name || "Creator",
       tagline: "Content Creator"
     };
+  };
+
+  const handleEditProfile = () => {
+    setShowEditProfile(true);
+  };
+
+  const handleProfileUpdate = (updatedUser) => {
+    setUserData(updatedUser);
+    setCurrentUser(updatedUser);
+    setShowEditProfile(false);
+    // Refresh the page data
+    window.location.reload();
   };
 
   const portfolio = getPortfolio();
@@ -97,37 +113,79 @@ export const CreatorProfilePage = ({ isOwner = false, onNavigate, creatorId }) =
   
   return (
     <div style={{ maxWidth: 900, animation: "fadeUp .4s ease" }}>
+      {/* Edit Profile Modal */}
+      {showEditProfile && (
+        <div 
+          className="modal-backdrop" 
+          onClick={() => setShowEditProfile(false)}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "rgba(0,0,0,0.6)",
+            backdropFilter: "blur(8px)",
+            zIndex: 1000,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "20px"
+          }}
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()} 
+            style={{ 
+              width: "100%", 
+              maxWidth: 550,
+              animation: "scaleIn 0.2s ease"
+            }}
+          >
+            <EditProfile 
+              onClose={() => setShowEditProfile(false)}
+              onSave={handleProfileUpdate}
+            />
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="card" style={{ marginBottom: 24, padding: 0, overflow: "hidden" }}>
         <div style={{ 
           height: 160, 
           background: isTshepiso 
-            ? "linear-gradient(135deg, #FF006E, #8338EC, #3A86FF)" 
+            ? "linear-gradient(135deg, #FF6B35, #E85D04, #FF9F6E)" 
             : isLesley 
-            ? "linear-gradient(135deg, #FF5400, #FFE600, #FF006E)"
+            ? "linear-gradient(135deg, #E85D04, #FF6B35, #FF9F6E)"
             : "linear-gradient(135deg, #0D0D0D 0%, #1A1A1A 100%)", 
           position: "relative", 
           overflow: "hidden" 
         }}>
-          <div style={{ position: "absolute", top: "30%", right: "10%", width: 200, height: 200, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,255,255,.2) 0%, transparent 70%)" }} />
+          <div style={{ position: "absolute", top: "30%", right: "10%", width: 200, height: 200, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,107,53,.2) 0%, transparent 70%)" }} />
         </div>
         <div style={{ padding: "0 28px 28px" }}>
           <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginTop: -44, marginBottom: 20, flexWrap: "wrap", gap: 16 }}>
             <div style={{ position: "relative" }}>
               <Avatar 
                 name={metrics.name} 
+                image={userData?.avatar}  // Pass the user's avatar image
                 size={80} 
-                ring={isTshepiso || isLesley} 
+                ring={isOwner} 
               />
               {isOwner && (
-                <div style={{ position: "absolute", bottom: 0, right: 0, width: 26, height: 26, background: "var(--white)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "var(--shadow-sm)", cursor: "pointer", border: "1.5px solid var(--border)" }}>
+                <div 
+                  style={{ position: "absolute", bottom: 0, right: 0, width: 26, height: 26, background: "var(--white)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "var(--shadow-sm)", cursor: "pointer", border: "1.5px solid var(--border)" }}
+                  onClick={handleEditProfile}
+                >
                   <Icon name="camera" size={12} />
                 </div>
               )}
             </div>
             <div style={{ display: "flex", gap: 10, paddingBottom: 4 }}>
               {isOwner ? (
-                <Button variant="ghost" size="sm"><Icon name="settings" size={14} /> Edit Profile</Button>
+                <Button variant="ghost" size="sm" onClick={handleEditProfile}>
+                  <Icon name="settings" size={14} /> Edit Profile
+                </Button>
               ) : (
                 <>
                   <Button variant="ghost" size="sm"><Icon name="link" size={14} /> Share</Button>
@@ -144,7 +202,7 @@ export const CreatorProfilePage = ({ isOwner = false, onNavigate, creatorId }) =
                 {metrics.bio}
               </p>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                {metrics.niches.map((tag, idx) => <Badge key={idx} variant="gray">{tag}</Badge>)}
+                {metrics.niches.map((tag, idx) => <Badge key={idx} variant="orange">{tag}</Badge>)}
               </div>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, minWidth: 280 }}>
@@ -154,7 +212,7 @@ export const CreatorProfilePage = ({ isOwner = false, onNavigate, creatorId }) =
                 [metrics.avgRate, "Avg Rate"]
               ].map(([v, l], idx) => (
                 <div key={idx} style={{ textAlign: "center", padding: "16px 12px", background: "var(--surface)", borderRadius: 12 }}>
-                  <div style={{ fontFamily: "var(--font-display)", fontSize: 20, fontWeight: 800, background: "linear-gradient(135deg, #FF006E, #8338EC)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  <div style={{ fontFamily: "var(--font-display)", fontSize: 20, fontWeight: 800, background: "linear-gradient(135deg, #FF6B35, #E85D04)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                     {v}
                   </div>
                   <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 2 }}>{l}</div>
@@ -165,7 +223,7 @@ export const CreatorProfilePage = ({ isOwner = false, onNavigate, creatorId }) =
           <div style={{ display: "flex", gap: 12, marginTop: 20, flexWrap: "wrap" }}>
             {["instagram", "tiktok", "youtube", "twitter"].map((s, idx) => (
               <div key={idx} style={{ width: 32, height: 32, borderRadius: 8, background: "var(--surface-2)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all .2s" }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = "linear-gradient(135deg, #FF006E, #8338EC)"; e.currentTarget.style.transform = "scale(1.1)"; }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = "linear-gradient(135deg, #FF6B35, #E85D04)"; e.currentTarget.style.transform = "scale(1.1)"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.background = "var(--surface-2)"; e.currentTarget.style.transform = "scale(1)"; }}>
                 <Icon name={s} size={14} />
               </div>
@@ -188,7 +246,7 @@ export const CreatorProfilePage = ({ isOwner = false, onNavigate, creatorId }) =
             <div key={idx} className="card" style={{ padding: 0, overflow: "hidden", cursor: "pointer", transition: "all 0.3s ease" }}
               onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-4px)"}
               onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}>
-              <div style={{ height: 140, background: "linear-gradient(135deg, #FF006E, #8338EC)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, position: "relative" }}>
+              <div style={{ height: 140, background: "linear-gradient(135deg, #FF6B35, #E85D04)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, position: "relative" }}>
                 {p.img}
                 <div style={{ position: "absolute", top: 10, left: 10 }}>
                   <Badge variant="gray" style={{ background: (platformColors[p.platform] || "#6B7280") + "22", color: platformColors[p.platform] || "#6B7280" }}>
@@ -235,7 +293,7 @@ export const CreatorProfilePage = ({ isOwner = false, onNavigate, creatorId }) =
             ]).map(([l, v], idx) => (
               <div key={idx} style={{ padding: 16, background: "var(--surface)", borderRadius: 12 }}>
                 <div style={{ color: "var(--muted)", fontSize: 12, marginBottom: 8 }}>{l}</div>
-                <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 22 }}>{v}</div>
+                <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 22, background: "linear-gradient(135deg, #FF6B35, #E85D04)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{v}</div>
               </div>
             ))}
           </div>
@@ -256,7 +314,7 @@ export const CreatorProfilePage = ({ isOwner = false, onNavigate, creatorId }) =
           ]).map((r, idx) => (
             <div key={idx} className="card">
               <div style={{ display: "flex", gap: 4, marginBottom: 12 }}>
-                {[...Array(Math.max(0, r.rating))].map((_, s) => <Icon key={s} name="star" size={14} color="#FFE600" />)}
+                {[...Array(Math.max(0, r.rating))].map((_, s) => <Icon key={s} name="star" size={14} color="#FF6B35" />)}
                 {[...Array(Math.max(0, 5 - r.rating))].map((_, s) => <Icon key={`empty-${s}`} name="star" size={14} color="var(--border)" />)}
               </div>
               <p style={{ fontSize: 14, lineHeight: 1.7, color: "var(--ink)", marginBottom: 12 }}>"{r.text}"</p>

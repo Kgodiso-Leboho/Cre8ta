@@ -25,7 +25,7 @@ export const LandingPage = ({ onNavigate }) => {
   }, []);
 
   const features = [
-    { icon: "zap", title: "Smart Matching", desc: "AI-powered pairing connects creators with brands that fit their niche and audience perfectly.", color: "#FFB800", gradient: "linear-gradient(135deg, #FFB800, #FF9500)" },
+    { icon: "zap", title: "Smart Matching", desc: "AI-powered pairing connects creators with brands that fit their niche and audience perfectly.", color: "#FF6B35", gradient: "linear-gradient(135deg, #FF6B35, #E85D04)" },
     { icon: "dollar", title: "Seamless Monetization", desc: "Built-in payment infrastructure. Get paid instantly for campaigns you complete.", color: "#10B981", gradient: "linear-gradient(135deg, #10B981, #059669)" },
     { icon: "target", title: "Campaign Tools", desc: "Create, track, and optimize campaigns with real-time analytics and performance dashboards.", color: "#3B82F6", gradient: "linear-gradient(135deg, #3B82F6, #2563EB)" },
     { icon: "sparkle", title: "AI-Powered Creation", desc: "Caption generators, content ideas, and profile optimizers trained on top-performing content.", color: "#8B5CF6", gradient: "linear-gradient(135deg, #8B5CF6, #6D28D9)" },
@@ -40,16 +40,16 @@ export const LandingPage = ({ onNavigate }) => {
   ];
 
   const testimonials = [
-    { name: "Zanele Dlamini", role: "Lifestyle Creator · 240K followers", text: "Cre8ta changed how I work with brands. I went from cold DMs to consistent monthly income in 60 days.", avatar: "ZD", image: "https://randomuser.me/api/portraits/women/1.jpg", rating: 5 },
-    { name: "Marcus Liu", role: "Head of Partnerships · Zara Africa", text: "We found three incredible creators in under a week. The campaign ROI was 4x what we expected.", avatar: "ML", image: "https://randomuser.me/api/portraits/men/2.jpg", rating: 5 },
-    { name: "Farai Mutasa", role: "Tech Creator · 180K followers", text: "The AI tools alone are worth it. The caption generator has saved me hours every single week.", avatar: "FM", image: "https://randomuser.me/api/portraits/men/3.jpg", rating: 5 },
+    { name: "Tshepiso Malema", role: "Fashion Creator · 185K followers", text: "Cre8ta changed how I work with brands. I've done campaigns with Bathu and GalXBoy - all through the platform!", avatar: "TM", image: "https://randomuser.me/api/portraits/men/32.jpg", rating: 5 },
+    { name: "Lesley Zibu", role: "Lifestyle Creator · 142K followers", text: "The AI tools helped me write better captions and my engagement went up by 40%. Best decision I made!", avatar: "KL", image: "https://randomuser.me/api/portraits/women/44.jpg", rating: 5 },
+    { name: "Theo Baloyi", role: "Founder, Bathu", text: "We've found incredible creators through Cre8ta. The match rate and quality is unmatched.", avatar: "TB", image: "https://randomuser.me/api/portraits/men/91.jpg", rating: 5 },
   ];
 
   const platforms = ["TikTok", "YouTube", "Instagram", "Twitter", "LinkedIn", "Podcast"];
   const stats = [
     { value: "12K+", label: "Creators", icon: "users" },
     { value: "800+", label: "Brands", icon: "briefcase" },
-    { value: "$2.4M+", label: "Paid Out", icon: "dollar" },
+    { value: "R2.4M+", label: "Paid Out", icon: "dollar" },
     { value: "94%", label: "Match Rate", icon: "trending" },
   ];
 
@@ -68,7 +68,7 @@ export const LandingPage = ({ onNavigate }) => {
         <div style={{ position: "absolute", top: "10%", right: "5%", zIndex: 0 }} className="hero-glow" />
         <div style={{ position: "absolute", bottom: "10%", left: "5%", zIndex: 0, opacity: 0.6 }} className="hero-glow" />
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "80px 24px", textAlign: "center", zIndex: 1, position: "relative" }}>
-          <div className="fade-up" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(245,200,66,.12)", border: "1px solid rgba(245,200,66,.3)", borderRadius: 100, padding: "6px 14px", marginBottom: 32 }}>
+          <div className="fade-up" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,107,53,.12)", border: "1px solid rgba(255,107,53,.3)", borderRadius: 100, padding: "6px 14px", marginBottom: 32 }}>
             <Icon name="sparkle" size={14} color="var(--gold-dark)" />
             <span style={{ fontSize: 13, fontWeight: 500, color: "var(--gold-dark)" }}>The creator economy, reimagined</span>
           </div>
@@ -76,11 +76,10 @@ export const LandingPage = ({ onNavigate }) => {
             Where Creators<br />
             <span style={{ position: "relative", display: "inline-block" }}>
               Meet Brands
-              {/*<span style={{ position: "absolute", bottom: 4, left: 0, right: 0, height: 6, background: "var(--gold)", opacity: 0.5, borderRadius: 3 }} />*/}
             </span>
           </h1>
           <p className="fade-up-2" style={{ fontSize: "clamp(16px,2.5vw,20px)", color: "var(--muted)", maxWidth: 560, margin: "0 auto 48px", lineHeight: 1.65 }}>
-            Cre8ta is the premium platform connecting Africa's best content creators with world-class brands with AI tools, seamless payments, and zero friction.
+            Cre8ta is the premium platform connecting South Africa's best content creators with world-class brands — with AI tools, seamless payments, and zero friction.
           </p>
           <div className="fade-up-3" style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
             <Button variant="gold" size="lg" onClick={() => onNavigate("register")}>
@@ -91,17 +90,15 @@ export const LandingPage = ({ onNavigate }) => {
             </Button>
           </div>
           <div style={{ marginTop: 48, display: "flex", alignItems: "center", justifyContent: "center", gap: 32, flexWrap: "wrap" }}>
-            {[["12K+", "Creators"], ["800+", "Brands"], ["$2.4M+", "Paid Out"], ["94%", "Match Rate"]].map(([n, l]) => (
-              <div key={l} style={{ textAlign: "center" }}>
-                <div style={{ fontFamily: "var(--font-display)", fontSize: 24, fontWeight: 800 }}>{n}</div>
-                <div style={{ fontSize: 13, color: "var(--muted)" }}>{l}</div>
+            {stats.map((stat, idx) => (
+              <div key={stat.label} style={{ textAlign: "center" }}>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: 24, fontWeight: 800 }}>{stat.value}</div>
+                <div style={{ fontSize: 13, color: "var(--muted)" }}>{stat.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
-
-            
 
       {/* Features Section with 3D Cards */}
       <section style={{ maxWidth: 1200, margin: "0 auto", padding: "100px 24px" }}>
@@ -176,7 +173,7 @@ export const LandingPage = ({ onNavigate }) => {
           width: 400, 
           height: 400, 
           borderRadius: "50%", 
-          background: "radial-gradient(circle, rgba(255,184,0,0.15) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(255,107,53,0.15) 0%, transparent 70%)",
           animation: "pulse 4s ease-in-out infinite"
         }} />
         <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative", zIndex: 1 }}>
@@ -208,12 +205,12 @@ export const LandingPage = ({ onNavigate }) => {
                   width: 80, 
                   height: 80, 
                   borderRadius: "50%", 
-                  background: "rgba(255,184,0,0.15)",
+                  background: "rgba(255,107,53,0.15)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   marginBottom: 24,
-                  border: "2px solid rgba(255,184,0,0.3)"
+                  border: "2px solid rgba(255,107,53,0.3)"
                 }}>
                   <Icon name={s.icon} size={32} color="var(--gold)" />
                 </div>
@@ -221,7 +218,7 @@ export const LandingPage = ({ onNavigate }) => {
                   fontFamily: "var(--font-display)", 
                   fontSize: 48, 
                   fontWeight: 900, 
-                  color: "rgba(255,184,0,0.15)",
+                  color: "rgba(255,107,53,0.15)",
                   lineHeight: 1,
                   position: "absolute",
                   top: -20,
@@ -243,15 +240,15 @@ export const LandingPage = ({ onNavigate }) => {
           <Badge variant="gold" icon="star">Testimonials</Badge>
           <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(32px,5vw,52px)", fontWeight: 800, letterSpacing: "-1.5px", marginTop: 16 }}>Loved by creators & brands</h2>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 24 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 24 }}>
           {testimonials.map((t, i) => (
             <div key={i} className="card" style={{ position: "relative" }}>
               <div style={{ display: "flex", gap: 4, marginBottom: 16 }}>
-                {[...Array(5)].map((_, s) => <Icon key={s} name="star" size={14} color="var(--gold)" />)}
+                {[...Array(t.rating)].map((_, s) => <Icon key={s} name="star" size={14} color="var(--gold)" />)}
               </div>
               <p style={{ color: "var(--ink)", fontSize: 15, lineHeight: 1.75, marginBottom: 20, fontStyle: "italic" }}>"{t.text}"</p>
               <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <Avatar name={t.name} size={40} />
+                <Avatar name={t.name} size={40} image={t.image} />
                 <div>
                   <div style={{ fontSize: 14, fontWeight: 600 }}>{t.name}</div>
                   <div style={{ fontSize: 12, color: "var(--muted)" }}>{t.role}</div>
@@ -264,7 +261,7 @@ export const LandingPage = ({ onNavigate }) => {
 
       {/* CTA Section with Parallax Effect */}
       <section style={{ 
-        background: "linear-gradient(135deg, #FFB800 0%, #FF9500 100%)", 
+        background: "linear-gradient(135deg, #FF6B35 0%, #E85D04 100%)", 
         padding: "100px 24px", 
         textAlign: "center", 
         position: "relative", 
@@ -275,7 +272,7 @@ export const LandingPage = ({ onNavigate }) => {
         <div style={{ 
           position: "absolute", 
           inset: 0, 
-          backgroundImage: "radial-gradient(circle at 30% 50%, rgba(255,255,255,0.3) 0%, transparent 60%)",
+          backgroundImage: "radial-gradient(circle at 30% 50%, rgba(255,255,255,0.25) 0%, transparent 60%)",
           pointerEvents: "none" 
         }} />
         <div style={{ position: "relative", zIndex: 1 }}>
@@ -292,7 +289,7 @@ export const LandingPage = ({ onNavigate }) => {
           </h2>
           <p style={{ 
             fontSize: 18, 
-            color: "rgba(13,13,13,.75)", 
+            color: "rgba(13,13,13,.8)", 
             marginBottom: 40, 
             maxWidth: 500, 
             margin: "0 auto 40px",
@@ -325,7 +322,7 @@ export const LandingPage = ({ onNavigate }) => {
               size="lg" 
               onClick={() => onNavigate("marketplace")} 
               style={{ 
-                background: "rgba(255,255,255,0.9)", 
+                background: "rgba(255,255,255,0.95)", 
                 borderColor: "rgba(13,13,13,0.2)",
                 transform: "scale(1)",
                 transition: "transform 0.3s ease"
@@ -351,7 +348,7 @@ export const LandingPage = ({ onNavigate }) => {
                 <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 20, color: "white" }}>Cre8ta</span>
               </div>
               <p style={{ color: "rgba(255,255,255,.45)", fontSize: 14, lineHeight: 1.7, maxWidth: 250 }}>
-                The creator economy platform built for Africa's next generation.
+                The creator economy platform built for South Africa's next generation.
               </p>
             </div>
             {[
@@ -372,7 +369,7 @@ export const LandingPage = ({ onNavigate }) => {
                       transition: "all 0.2s ease" 
                     }}
                     onMouseEnter={e => {
-                      e.target.style.color = "var(--gold)";
+                      e.target.style.color = "#FF6B35";
                       e.target.style.transform = "translateX(4px)";
                     }}
                     onMouseLeave={e => {
@@ -409,7 +406,7 @@ export const LandingPage = ({ onNavigate }) => {
                     borderRadius: 8
                   }}
                   onMouseEnter={e => {
-                    e.currentTarget.style.color = "var(--gold)";
+                    e.currentTarget.style.color = "#FF6B35";
                     e.currentTarget.style.transform = "translateY(-3px)";
                   }}
                   onMouseLeave={e => {
@@ -425,8 +422,7 @@ export const LandingPage = ({ onNavigate }) => {
         </div>
       </footer>
 
-      {/* Add keyframe animations */}
-      <style jsx>{`
+      <style jsx="true">{`
         @keyframes float {
           0%, 100% { transform: translateY(0px); }
           50% { transform: translateY(-20px); }

@@ -19,28 +19,34 @@ export const AuthPage = ({ mode = "login", onNavigate }) => {
     // Convert mockUsers object to array
     const initialUsers = [
       {
-        id: "creator_tshepiso",
-        name: "Tshepiso Malema",
-        email: "tshepiso@cre8ta.com",
+        id: tshepisoUser.id,
+        name: tshepisoUser.name,
+        email: tshepisoUser.email,
         password: "password123",
-        role: "creator",
-        avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-        bio: "Joburg-based fashion and lifestyle creator.",
-        location: "Johannesburg",
-        joinedDate: "2024-02-10",
-        verified: true
+        role: tshepisoUser.role,
+        avatar: tshepisoUser.avatar,
+        bio: tshepisoUser.bio,
+        location: tshepisoUser.location,
+        joinedDate: tshepisoUser.joinedDate,
+        verified: tshepisoUser.verified,
+        metrics: tshepisoUser.metrics,
+        niches: tshepisoUser.niches,
+        socialLinks: tshepisoUser.socialLinks
       },
       {
-        id: "creator_lesley",
-        name: "lesley Zibu",
-        email: "lesley@cre8ta.com",
+        id: lesleyUser.id,
+        name: lesleyUser.name,
+        email: lesleyUser.email,
         password: "password123",
-        role: "creator",
-        avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-        bio: "Pretoria-based content creator celebrating SA culture.",
-        location: "Pretoria",
-        joinedDate: "2024-03-05",
-        verified: true
+        role: lesleyUser.role,
+        avatar: lesleyUser.avatar,
+        bio: lesleyUser.bio,
+        location: lesleyUser.location,
+        joinedDate: lesleyUser.joinedDate,
+        verified: lesleyUser.verified,
+        metrics: lesleyUser.metrics,
+        niches: lesleyUser.niches,
+        socialLinks: lesleyUser.socialLinks
       },
       {
         id: "brand_bathu",
@@ -52,7 +58,13 @@ export const AuthPage = ({ mode = "login", onNavigate }) => {
         bio: "Premium South African sneaker brand.",
         location: "Johannesburg",
         joinedDate: "2024-01-15",
-        verified: true
+        verified: true,
+        metrics: {
+          activeCampaigns: 5,
+          totalSpend: 45000,
+          avgEngagement: 7.8,
+          totalApplications: 124
+        }
       },
       {
         id: "brand_galxboy",
@@ -64,7 +76,13 @@ export const AuthPage = ({ mode = "login", onNavigate }) => {
         bio: "Urban streetwear brand from Soweto.",
         location: "Soweto",
         joinedDate: "2024-01-20",
-        verified: true
+        verified: true,
+        metrics: {
+          activeCampaigns: 3,
+          totalSpend: 28000,
+          avgEngagement: 8.2,
+          totalApplications: 89
+        }
       }
     ];
     localStorage.setItem("cre8ta_users", JSON.stringify(initialUsers));
@@ -99,8 +117,8 @@ export const AuthPage = ({ mode = "login", onNavigate }) => {
       password: userData.password,
       role: userData.role,
       avatar: userData.role === "creator" 
-        ? "https://randomuser.me/api/portraits/lego/1.jpg" 
-        : "https://logo.clearbit.com/example.com",
+        ? `https://randomuser.me/api/portraits/${Math.random() > 0.5 ? 'men' : 'women'}/${Math.floor(Math.random() * 100)}.jpg`
+        : "https://logo.clearbit.com/placeholder.com",
       bio: userData.role === "creator" 
         ? "New creator on Cre8ta platform" 
         : "New brand on Cre8ta platform",

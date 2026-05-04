@@ -51,6 +51,7 @@ export const CreateCampaignPage = ({ onSection }) => {
       platform: form.platform,
       deadline: form.deadline,
       description: form.description,
+      desc: form.description,
       requirements: form.requirements.split('\n').filter(r => r.trim()),
       tags: form.category.toLowerCase().split(','),
       applications: 0,
@@ -195,10 +196,10 @@ export const CreateCampaignPage = ({ onSection }) => {
         <Input 
           label="Requirements (one per line)" 
           placeholder="Example:
-50K+ followers
-Fashion/Streetwear niche
-3 Instagram posts + 5 stories
-Must be based in SA" 
+          50K+ followers
+          Fashion/Streetwear niche
+          3 Instagram posts + 5 stories
+          Must be based in SA" 
           value={form.requirements}
           onChange={e => setForm(f => ({ ...f, requirements: e.target.value }))} 
           rows={4} 
@@ -214,9 +215,9 @@ Must be based in SA"
           gap: 12, 
           alignItems: "flex-start" 
         }}>
-          <Icon name="zap" size={20} color="#FF006E" />
-          <div style={{ fontSize: 13, color: "#FF006E" }}>
-            <strong>✨ AI Pro Tip:</strong> Campaigns with detailed briefs get 3x more quality applications. Include your brand tone, example content, and specific deliverables. Brands that add visual references receive 5x more applications!
+          <Icon name="zap" size={20} color="#FF6B35" />
+          <div style={{ fontSize: 13, color: "#FF6B35" }}>
+            <strong>AI Pro Tip:</strong> Campaigns with detailed briefs get 3x more quality applications. Include your brand tone, example content, and specific deliverables. Brands that add visual references receive 5x more applications!
           </div>
         </div>
         

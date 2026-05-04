@@ -54,12 +54,12 @@ export const BrandDashboard = ({ section, onSection, onNavigate }) => {
     if (isBathu) {
       return [
         { name: "Tshepiso Malema", niche: "Fashion", followers: "185K", rate: "R950/post", match: 98 },
-        { name: "Kgodiso Leboho", niche: "Lifestyle", followers: "142K", rate: "R750/post", match: 94 },
+        { name: "Lesley Zibu", niche: "Lifestyle", followers: "142K", rate: "R750/post", match: 94 },
         { name: "Linda Zulu", niche: "Fitness", followers: "98K", rate: "R550/post", match: 87 },
       ];
     } else if (isGalXBoy) {
       return [
-        { name: "Kgodiso Leboho", niche: "Lifestyle", followers: "142K", rate: "R750/post", match: 96 },
+        { name: "Lesley Zibu", niche: "Lifestyle", followers: "142K", rate: "R750/post", match: 96 },
         { name: "Tshepiso Malema", niche: "Fashion", followers: "185K", rate: "R950/post", match: 92 },
         { name: "Thando Dlamini", niche: "Travel", followers: "156K", rate: "R800/post", match: 88 },
       ];
@@ -119,7 +119,7 @@ export const BrandDashboard = ({ section, onSection, onNavigate }) => {
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 28, flexWrap: "wrap", gap: 16 }}>
           <div>
             <h1 style={{ fontFamily: "var(--font-display)", fontSize: 26, fontWeight: 800, marginBottom: 4 }}>
-              {greeting}, {brandName}! 👋
+              {greeting}, {brandName}! 
             </h1>
             <p style={{ color: "var(--muted)", fontSize: 14 }}>Manage campaigns and discover South African talent.</p>
           </div>

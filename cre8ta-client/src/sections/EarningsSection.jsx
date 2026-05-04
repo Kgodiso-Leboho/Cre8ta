@@ -3,9 +3,10 @@ import { StatCard } from "../components/ui/StatCard";
 import { Badge } from "../components/ui/Badge";
 import { Avatar } from "../components/ui/Avatar";
 import { Icon } from "../components/ui/Icon";
+import { Button } from "../components/ui/Button";
 import { getCurrentUser } from "../data/mockData";
 
-export const EarningsSection = () => {
+export const EarningsSection = ({ onNavigate }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedPeriod, setSelectedPeriod] = useState("all");
@@ -24,7 +25,7 @@ export const EarningsSection = () => {
       setEarningsData({
         totalEarned: { value: "R12,450", delta: "+18.2%" },
         thisMonth: { value: "R3,800", delta: "+24%" },
-        pending: { value: "R2,200", icon: "zap", color: "#8B5CF6" },
+        pending: { value: "R2,200", icon: "zap", color: "#F59E0B" },
         withdrawn: { value: "R7,250", icon: "check", color: "#10B981" }
       });
       setTransactions([
@@ -34,11 +35,11 @@ export const EarningsSection = () => {
         { brand: "Sketchy Souls", amount: "+R11,000", date: "Oct 15, 2025", status: "pending", campaign: "Custom Art Collab" },
         { brand: "MaXhosa Africa", amount: "+R40,000", date: "Nov 10, 2025", status: "pending", campaign: "Heritage Month" }
       ]);
-    } else if (user?.name === "Kgodiso Leboho") {
+    } else if (user?.name === "Lesley Zibu") {
       setEarningsData({
         totalEarned: { value: "R8,920", delta: "+32.5%" },
         thisMonth: { value: "R2,450", delta: "+45%" },
-        pending: { value: "R1,500", icon: "zap", color: "#8B5CF6" },
+        pending: { value: "R1,500", icon: "zap", color: "#F59E0B" },
         withdrawn: { value: "R4,970", icon: "check", color: "#10B981" }
       });
       setTransactions([
@@ -51,7 +52,7 @@ export const EarningsSection = () => {
       setEarningsData({
         totalEarned: { value: "R0", delta: "0%" },
         thisMonth: { value: "R0", delta: "0%" },
-        pending: { value: "R0", icon: "zap", color: "#8B5CF6" },
+        pending: { value: "R0", icon: "zap", color: "#F59E0B" },
         withdrawn: { value: "R0", icon: "check", color: "#10B981" }
       });
       setTransactions([]);
@@ -97,8 +98,8 @@ export const EarningsSection = () => {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24, flexWrap: "wrap", gap: 16 }}>
         <h1 style={{ fontFamily: "var(--font-display)", fontSize: 26, fontWeight: 800 }}>Earnings</h1>
         <div style={{ display: "flex", gap: 8 }}>
-          <Badge variant="pink" icon="trending">
-            Total: {earningsData?.totalEarned.value}
+          <Badge variant="orange" icon="trending">
+            Total: {earningsData?.totalEarned.value || "R0"}
           </Badge>
         </div>
       </div>
@@ -107,27 +108,27 @@ export const EarningsSection = () => {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16, marginBottom: 24 }}>
         <StatCard 
           label="Total Earned" 
-          value={earningsData?.totalEarned.value} 
+          value={earningsData?.totalEarned.value || "R0"} 
           delta={earningsData?.totalEarned.delta} 
           icon="dollar" 
-          color="#FF006E"
+          color="#FF6B35"
         />
         <StatCard 
           label="This Month" 
-          value={earningsData?.thisMonth.value} 
+          value={earningsData?.thisMonth.value || "R0"} 
           delta={earningsData?.thisMonth.delta} 
           icon="trending" 
           color="#10B981" 
         />
         <StatCard 
           label="Pending" 
-          value={earningsData?.pending.value} 
+          value={earningsData?.pending.value || "R0"} 
           icon="zap" 
-          color="#8B5CF6" 
+          color="#F59E0B" 
         />
         <StatCard 
           label="Withdrawn" 
-          value={earningsData?.withdrawn.value} 
+          value={earningsData?.withdrawn.value || "R0"} 
           icon="check" 
           color="#3B82F6" 
         />
@@ -154,7 +155,7 @@ export const EarningsSection = () => {
             <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 4 }}>Pending Payment</div>
           </div>
           <div style={{ textAlign: "center", padding: 16, background: "var(--surface)", borderRadius: 12 }}>
-            <div style={{ fontSize: 28, fontWeight: 800, color: "#FF006E" }}>
+            <div style={{ fontSize: 28, fontWeight: 800, color: "#FF6B35" }}>
               {transactions.length}
             </div>
             <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 4 }}>Total Collaborations</div>
@@ -209,7 +210,7 @@ export const EarningsSection = () => {
                   transition: "background 0.2s",
                   cursor: "pointer"
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,0,110,0.05)"}
+                onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,107,53,0.05)"}
                 onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
               >
                 <Avatar name={t.brand} size={44} />
@@ -235,7 +236,7 @@ export const EarningsSection = () => {
         )}
         
         {/* Withdrawal Button */}
-        {earningsData?.pending.value !== "R0" && (
+        {earningsData?.pending && earningsData.pending.value !== "R0" && (
           <div style={{ marginTop: 24, paddingTop: 20, borderTop: "1px solid var(--border)", textAlign: "center" }}>
             <Button variant="gold">
               <Icon name="dollar" size={16} /> Withdraw Available Funds
@@ -248,10 +249,10 @@ export const EarningsSection = () => {
       </div>
 
       {/* Earnings Tips */}
-      {transactions.length === 0 && (
-        <div className="card" style={{ marginTop: 20, background: "linear-gradient(135deg, rgba(255,0,110,0.1), rgba(131,56,236,0.1))" }}>
+      {transactions.length === 0 && onNavigate && (
+        <div className="card" style={{ marginTop: 20, background: "linear-gradient(135deg, rgba(255,107,53,0.1), rgba(232,93,4,0.1))" }}>
           <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-            <Icon name="sparkle" size={24} color="#FF006E" />
+            <Icon name="sparkle" size={24} color="#FF6B35" />
             <div>
               <h4 style={{ fontWeight: 600, marginBottom: 4 }}>Start Earning Today!</h4>
               <p style={{ fontSize: 13, color: "var(--muted)" }}>

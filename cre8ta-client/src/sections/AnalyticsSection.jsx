@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { StatCard } from "../components/ui/StatCard";
 import { Icon } from "../components/ui/Icon";
-import { getCurrentUser, mockAnalytics } from "../data/mockData";
+import { Button } from "../components/ui/Button";
+import { getCurrentUser } from "../data/mockData";
 
 export const AnalyticsSection = () => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -37,7 +38,7 @@ export const AnalyticsSection = () => {
           gender: { "Female": 55, "Male": 42, "Other": 3 }
         }
       });
-    } else if (user?.name === "Kgodiso Leboho") {
+    } else if (user?.name === "Lesley Zibu") {
       setAnalyticsData({
         reach: { value: "2.8M", delta: "+45%" },
         engagement: { value: "8.1%", delta: "+1.2%" },
@@ -84,8 +85,8 @@ export const AnalyticsSection = () => {
     setLoading(false);
   }, []);
 
-  const renderBarChart = (data, color = "#FF006E") => {
-    const maxValue = Math.max(...Object.values(data));
+  const renderBarChart = (data, color = "#FF6B35") => {
+    const maxValue = Math.max(...Object.values(data), 1);
     return (
       <div style={{ display: "flex", gap: 12, alignItems: "flex-end", height: 150 }}>
         {Object.entries(data).map(([label, value]) => (
@@ -127,7 +128,7 @@ export const AnalyticsSection = () => {
           <polyline
             points={data.map((d, i) => `${(i / (data.length - 1)) * 400},${200 - (d.views / maxViews) * 150}`).join(" ")}
             fill="none"
-            stroke="#FF006E"
+            stroke="#FF6B35"
             strokeWidth="2"
           />
           {data.map((d, i) => (
@@ -136,7 +137,7 @@ export const AnalyticsSection = () => {
               cx={(i / (data.length - 1)) * 400}
               cy={200 - (d.views / maxViews) * 150}
               r="4"
-              fill="#FF006E"
+              fill="#FF6B35"
             />
           ))}
         </svg>
@@ -185,10 +186,10 @@ export const AnalyticsSection = () => {
 
       {/* Stats Cards */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16, marginBottom: 24 }}>
-        <StatCard label="Total Reach" value={analyticsData?.reach.value} delta={analyticsData?.reach.delta} icon="globe" color="#3A86FF" />
-        <StatCard label="Avg Engagement" value={analyticsData?.engagement.value} delta={analyticsData?.engagement.delta} icon="trending" color="#10B981" />
-        <StatCard label="Content Pieces" value={analyticsData?.contentPieces.value} delta={`+${analyticsData?.contentPieces.delta}`} icon="grid" color="#8B5CF6" />
-        <StatCard label="Brand Collabs" value={analyticsData?.brandCollabs.value} delta={`+${analyticsData?.brandCollabs.delta}`} icon="briefcase" color="#FF006E" />
+        <StatCard label="Total Reach" value={analyticsData?.reach.value || "0"} delta={analyticsData?.reach.delta} icon="globe" color="#3A86FF" />
+        <StatCard label="Avg Engagement" value={analyticsData?.engagement.value || "0%"} delta={analyticsData?.engagement.delta} icon="trending" color="#10B981" />
+        <StatCard label="Content Pieces" value={analyticsData?.contentPieces.value || "0"} delta={`+${analyticsData?.contentPieces.delta || 0}`} icon="grid" color="#8B5CF6" />
+        <StatCard label="Brand Collabs" value={analyticsData?.brandCollabs.value || "0"} delta={`+${analyticsData?.brandCollabs.delta || 0}`} icon="briefcase" color="#FF6B35" />
       </div>
 
       {/* Performance Chart */}
@@ -201,7 +202,7 @@ export const AnalyticsSection = () => {
         <div style={{ display: "flex", justifyContent: "space-around", marginTop: 20, gap: 20, flexWrap: "wrap" }}>
           {analyticsData?.weeklyData.map((week, i) => (
             <div key={i} style={{ textAlign: "center", flex: 1 }}>
-              <div style={{ fontSize: 13, fontWeight: 600, color: "#FF006E" }}>{week.views.toLocaleString()}</div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: "#FF6B35" }}>{week.views.toLocaleString()}</div>
               <div style={{ fontSize: 11, color: "var(--muted)" }}>{week.week} Views</div>
               <div style={{ fontSize: 12, color: "#10B981", marginTop: 4 }}>↑ {week.engagement}%</div>
             </div>
@@ -230,7 +231,7 @@ export const AnalyticsSection = () => {
                 width: 40, 
                 height: 40, 
                 borderRadius: 8, 
-                background: `linear-gradient(135deg, #FF006E, #8338EC)`,
+                background: `linear-gradient(135deg, #FF6B35, #E85D04)`,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -261,7 +262,7 @@ export const AnalyticsSection = () => {
             <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 16 }}>Age Demographics</h3>
             <p style={{ color: "var(--muted)", fontSize: 12 }}>Audience age distribution</p>
           </div>
-          {renderBarChart(analyticsData?.demographics.age, "#3A86FF")}
+          {renderBarChart(analyticsData?.demographics.age || {}, "#3A86FF")}
         </div>
 
         {/* Location Demographics */}
@@ -275,10 +276,10 @@ export const AnalyticsSection = () => {
               <div key={city}>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4, fontSize: 12 }}>
                   <span>{city}</span>
-                  <span style={{ fontWeight: 600, color: "#FF006E" }}>{percent}%</span>
+                  <span style={{ fontWeight: 600, color: "#FF6B35" }}>{percent}%</span>
                 </div>
                 <div className="progress" style={{ height: 6 }}>
-                  <div className="progress-bar" style={{ width: `${percent}%`, background: "linear-gradient(90deg, #FF006E, #8338EC)" }} />
+                  <div className="progress-bar" style={{ width: `${percent}%`, background: "linear-gradient(90deg, #FF6B35, #E85D04)" }} />
                 </div>
               </div>
             ))}
@@ -300,14 +301,14 @@ export const AnalyticsSection = () => {
                 height: 100, 
                 margin: "0 auto",
                 borderRadius: "50%",
-                background: `conic-gradient(#FF006E 0deg ${percent * 3.6}deg, #E5E7EB ${percent * 3.6}deg 360deg)`,
+                background: `conic-gradient(#FF6B35 0deg ${percent * 3.6}deg, #E5E7EB ${percent * 3.6}deg 360deg)`,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 marginBottom: 12
               }}>
                 <div style={{ background: "white", width: 60, height: 60, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
-                  <div style={{ fontSize: 18, fontWeight: 800, color: "#FF006E" }}>{percent}%</div>
+                  <div style={{ fontSize: 18, fontWeight: 800, color: "#FF6B35" }}>{percent}%</div>
                 </div>
               </div>
               <div style={{ fontWeight: 600, fontSize: 14 }}>{gender}</div>

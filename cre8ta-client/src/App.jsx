@@ -24,14 +24,19 @@ export default function App() {
   };
 
   const handleCreatorSection = (s) => {
+    
     setCreatorSection(s);
     setPage("creator-dashboard");
   };
 
   const handleBrandSection = (s) => {
-    if (s === "marketplace") { setPage("marketplace"); return; }
-    setPage("brand-dashboard");
+    // BRAND navigation - FIXED
+    if (s === "marketplace") { 
+      setPage("marketplace"); 
+      return; 
+    }
     setBrandSection(s);
+    setPage("brand-dashboard");
   };
 
   return (
@@ -59,6 +64,19 @@ export default function App() {
 
       {page === "brand-dashboard" && (
         <BrandDashboard section={brandSection} onSection={handleBrandSection} onNavigate={navigate} />
+      )}
+
+      {/* Add marketplace and ai-tools pages */}
+      {page === "marketplace" && (
+        <div style={{ paddingTop: 80, padding: "80px 24px 60px", maxWidth: 1200, margin: "0 auto" }}>
+          <MarketplacePage onNavigate={navigate} />
+        </div>
+      )}
+
+      {page === "ai-tools" && (
+        <div style={{ paddingTop: 80, padding: "80px 24px 60px", maxWidth: 900, margin: "0 auto" }}>
+          <AIToolsPage />
+        </div>
       )}
     </div>
   );
