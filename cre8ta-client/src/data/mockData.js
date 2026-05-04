@@ -1,7 +1,7 @@
 // Mock data for Cre8ta Creator Platform - South African Edition
 import tshepisoImg from "../assets/creators/tshepiso-malema.jpg";
 import lesleyImg from "../assets/creators/lesley-zibu.jpg";
-import bathuLogo from "../assets/brands/bathu.png";
+import bathuLogo from "../assets/brands/Bathu.jpg";
 
 // User Profiles - South African Creators
 export const mockUsers = {
@@ -44,7 +44,7 @@ export const mockUsers = {
     email: "lesley@cre8ta.com",
     role: "creator",
     avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-    coverImage: "https://images.unsplash.com/photo-1524253482453-3fed8d2fe12b",
+    coverImage: "lesleyImg",
     bio: "Pretoria-based content creator. Celebrating South African culture, music, and fashion. Let's collab!",
     location: "Pretoria, South Africa",
     niches: ["Lifestyle", "Music", "Fashion", "Vlogs"],
@@ -425,7 +425,7 @@ export const mockPortfolio = {
       date: "Nov 2025"
     }
   ],
-  kgodiso: [
+  lesley: [
     {
       id: "port_005",
       title: "Pretoria Street Style",
@@ -456,7 +456,7 @@ export const mockActivity = {
     { text: "Payment of R18,000 received from Bathu", time: "2 days ago", icon: "dollar", color: "#F59E0B" },
     { text: "New follower milestone: 185K 🎉", time: "3 days ago", icon: "users", color: "#EC4899" }
   ],
-  kgodiso: [
+  lesley: [
     { text: "MaXhosa Africa shortlisted your application", time: "1 hour ago", icon: "check", color: "#10B981" },
     { text: "Your TikTok went viral! 432K views", time: "3 hours ago", icon: "trending", color: "#FF006E" },
     { text: "Yangas wants to collaborate", time: "1 day ago", icon: "briefcase", color: "#3B82F6" }
@@ -478,7 +478,7 @@ export const mockEarnings = {
       { brand: "Sketchy Souls", amount: "+R11,000", date: "Oct 15, 2025", status: "pending" }
     ]
   },
-  kgodiso: {
+  lesley: {
     total: 8920,
     thisMonth: 2450,
     pending: 1500,
@@ -506,7 +506,7 @@ export const mockAnalytics = {
       { week: "Week 4", views: 189000, engagement: 7.5 }
     ]
   },
-  kgodiso: {
+  lesley: {
     reach: { value: "2.8M", delta: "+45%" },
     engagement: { value: "8.1%", delta: "+1.2%" },
     contentPieces: { value: "32", delta: "+8" },
@@ -529,8 +529,8 @@ export const mockDiscoverCreators = [
     avatar: "https://randomuser.me/api/portraits/men/32.jpg"
   },
   {
-    id: "creator_kgodiso",
-    name: "Kgodiso Leboho",
+    id: "creator_lesley",
+    name: "lesley Zibu",
     niche: "Lifestyle & Culture",
     followers: "142K",
     engagement: "8.1%",
@@ -578,7 +578,7 @@ export const mockTestimonials = [
   },
   {
     id: "test_002",
-    name: "Kgodiso Leboho",
+    name: "lesley Zibu",
     role: "Lifestyle Creator · 142K followers",
     text: "The AI tools helped me write better captions and my engagement went up by 40%. Best decision I made for my content career.",
     rating: 5,
@@ -602,7 +602,7 @@ export const getRandomCampaign = () => {
 export const getCreatorById = (id) => {
   const creators = {
     "creator_tshepiso": mockUsers.creator,
-    "creator_kgodiso": mockUsers.creator2,
+    "creator_lesley": mockUsers.creator2,
     "creator_linda": mockUsers.creator3,
     "creator_thando": mockUsers.creator4
   };
