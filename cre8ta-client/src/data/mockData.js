@@ -629,5 +629,93 @@ export const mockStats = [
   { number: "94%", label: "Match Rate" }
 ];
 
+// Helper functions for user management
+export const getAllUsers = () => {
+  const savedUsers = localStorage.getItem("cre8ta_users");
+  if (savedUsers) {
+    return JSON.parse(savedUsers);
+  }
+  return [];
+};
+
+export const findUserByEmail = (email) => {
+  const users = getAllUsers();
+  return users.find(user => user.email === email);
+};
+
+export const findUserByEmailAndPassword = (email, password) => {
+  const users = getAllUsers();
+  return users.find(user => user.email === email && user.password === password);
+};
+
+export const createUser = (userData) => {
+  const users = getAllUsers();
+  
+  // Check if email exists
+  if (findUserByEmail(userData.email)) {
+    throw new Error("Email already registered");
+  }
+  
+  const newUser = {
+    id: `${userData.role}_${Date.now()}`,
+    name: userData.name,
+    email: userData.email,
+    password: userData.password,
+    role: userData.role,
+    avatar: userData.role === "creator" 
+      ? "https://randomuser.me/api/portraits/lego/1.jpg" 
+      : "https://logo.clearbit.com/example.com",
+    bio: userData.role === "creator" 
+      ? "New creator on Cre8ta platform" 
+      : "New brand on Cre8ta platform",
+    location: userData.role === "creator" ? "South Africa" : "",
+    joinedDate: new Date().toISOString().split('T')[0],
+    verified: false,
+    metrics: userData.role === "creator" ? {
+      followers: 0,
+      engagement: 0,
+      avgRate: 0,
+      totalEarnings: 0,
+      monthlyViews: 0,
+      activeCampaigns: 0
+    } : {
+      activeCampaigns: 0,
+      totalSpend: 0,
+      avgEngagement: 0,
+      totalApplications: 0
+    }
+  };
+  
+  users.push(newUser);
+  localStorage.setItem("cre8ta_users", JSON.stringify(users));
+  return newUser;
+};
+
+export const getCurrentUser = () => {
+  const currentUser = localStorage.getItem("cre8ta_current_user");
+  return currentUser ? JSON.parse(currentUser) : null;
+};
+
+export const logoutUser = () => {
+  localStorage.removeItem("cre8ta_current_user");
+};
+
+export const updateUser = (userId, updates) => {
+  const users = getAllUsers();
+  const index = users.findIndex(u => u.id === userId);
+  if (index !== -1) {
+    users[index] = { ...users[index], ...updates };
+    localStorage.setItem("cre8ta_users", JSON.stringify(users));
+    
+    // Update current user if it's the same
+    const currentUser = getCurrentUser();
+    if (currentUser && currentUser.id === userId) {
+      localStorage.setItem("cre8ta_current_user", JSON.stringify(users[index]));
+    }
+    return users[index];
+  }
+  return null;
+};
+
 // Platform integrations
 export const mockPlatforms = ["TikTok", "YouTube", "Instagram", "Twitter", "LinkedIn", "Podcast"];
