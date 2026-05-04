@@ -16,9 +16,9 @@ export const CreatorProfilePage = ({ isOwner = false, onNavigate, creatorId }) =
     setLoading(false);
   }, []);
 
-  // Check if we're viewing Tshepiso or Kgodiso
+  // Check if we're viewing Tshepiso or Lesley
   const isTshepiso = currentUser?.name === "Tshepiso Malema" || creatorId === "tshepiso";
-  const isKgodiso = currentUser?.name === "Kgodiso Leboho" || creatorId === "kgodiso";
+  const isLesley = currentUser?.name === "Lesley Zibu" || creatorId === "Lesley";
   
   // Portfolio data based on creator
   const getPortfolio = () => {
@@ -31,7 +31,7 @@ export const CreatorProfilePage = ({ isOwner = false, onNavigate, creatorId }) =
         { title: "GalXBoy Unboxing", platform: "tiktok", views: "178K", img: "📦" },
         { title: "Joburg Nightlife", platform: "instagram", views: "98K", img: "🌃" }
       ];
-    } else if (isKgodiso) {
+    } else if (isLesley) {
       return [
         { title: "Pretoria Street Style", platform: "instagram", views: "178K", img: "🌸" },
         { title: "GalXBoy Heritage Collection", platform: "youtube", views: "267K", img: "🎨" },
@@ -59,7 +59,7 @@ export const CreatorProfilePage = ({ isOwner = false, onNavigate, creatorId }) =
         name: "Tshepiso Malema",
         tagline: "Fashion & Streetwear Creator"
       };
-    } else if (isKgodiso) {
+    } else if (isLesley) {
       return {
         followers: "142K",
         engagement: "8.1%",
@@ -67,7 +67,7 @@ export const CreatorProfilePage = ({ isOwner = false, onNavigate, creatorId }) =
         bio: "Pretoria-based content creator. Celebrating South African culture, music, and fashion. Let's collab! ✨",
         location: "Pretoria, South Africa",
         niches: ["Lifestyle", "Music", "Fashion", "Vlogs"],
-        name: "Kgodiso Leboho",
+        name: "Lesley Zibu",
         tagline: "Lifestyle & Culture Creator"
       };
     }
@@ -103,7 +103,7 @@ export const CreatorProfilePage = ({ isOwner = false, onNavigate, creatorId }) =
           height: 160, 
           background: isTshepiso 
             ? "linear-gradient(135deg, #FF006E, #8338EC, #3A86FF)" 
-            : isKgodiso 
+            : isLesley 
             ? "linear-gradient(135deg, #FF5400, #FFE600, #FF006E)"
             : "linear-gradient(135deg, #0D0D0D 0%, #1A1A1A 100%)", 
           position: "relative", 
@@ -117,7 +117,7 @@ export const CreatorProfilePage = ({ isOwner = false, onNavigate, creatorId }) =
               <Avatar 
                 name={metrics.name} 
                 size={80} 
-                ring={isTshepiso || isKgodiso} 
+                ring={isTshepiso || isLesley} 
               />
               {isOwner && (
                 <div style={{ position: "absolute", bottom: 0, right: 0, width: 26, height: 26, background: "var(--white)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "var(--shadow-sm)", cursor: "pointer", border: "1.5px solid var(--border)" }}>
@@ -218,7 +218,7 @@ export const CreatorProfilePage = ({ isOwner = false, onNavigate, creatorId }) =
               ["Link Click Rate", "4.1%"],
               ["Saves Rate", "2.3%"],
               ["Share Rate", "1.2%"]
-            ] : isKgodiso ? [
+            ] : isLesley ? [
               ["Avg Views/Post", "128K"],
               ["Avg Likes/Post", "9.8K"],
               ["Story Views", "22K"],
@@ -248,9 +248,9 @@ export const CreatorProfilePage = ({ isOwner = false, onNavigate, creatorId }) =
             { brand: "Bathu", text: "Tshepiso's content is authentic and engaging. He captured the essence of our brand perfectly.", rating: 5, date: "Nov 2025" },
             { brand: "GalXBoy", text: "Working with Tshepiso was a dream. His creativity and professionalism are top-tier.", rating: 5, date: "Oct 2025" },
             { brand: "Yangas", text: "Great collaboration! Tshepiso delivered high-quality content that resonated with our audience.", rating: 4, date: "Sep 2025" }
-          ] : isKgodiso ? [
-            { brand: "MaXhosa Africa", text: "Kgodiso's storytelling ability is unmatched. She brought our heritage collection to life.", rating: 5, date: "Nov 2025" },
-            { brand: "GalXBoy", text: "Amazing energy and creativity! Kgodiso understood our brand vision immediately.", rating: 5, date: "Oct 2025" }
+          ] : isLesley ? [
+            { brand: "MaXhosa Africa", text: "Lesley's storytelling ability is unmatched. She brought our heritage collection to life.", rating: 5, date: "Nov 2025" },
+            { brand: "GalXBoy", text: "Amazing energy and creativity! Lesley understood our brand vision immediately.", rating: 5, date: "Oct 2025" }
           ] : [
             { brand: "Welcome to Cre8ta", text: "Complete your profile and start collaborating with brands!", rating: 0, date: "Just now" }
           ]).map((r, idx) => (
