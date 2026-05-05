@@ -603,6 +603,13 @@ export const lesleyUser = mockUsers.creator2;
 export const lindaUser = mockUsers.creator3;
 export const thandoUser = mockUsers.creator4;
 
+export const bathuBrand = mockBrands.brand1;
+export const galxboyBrand = mockBrands.brand2;
+export const yangasBrand = mockBrands.brand3;
+export const maxhosaBrand = mockBrands.brand4;
+export const sketchyBrand = mockBrands.brand5;
+export const mzansiFitBrand = mockBrands.brand6;
+
 // Export arrays of users
 export const getAllMockUsers = () => {
   return [

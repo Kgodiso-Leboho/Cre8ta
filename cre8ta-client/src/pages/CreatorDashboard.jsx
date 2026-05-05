@@ -11,22 +11,38 @@ import { MarketplacePage } from "./MarketplacePage";
 import { AIToolsPage } from "./AIToolsPage";
 import { AnalyticsSection } from "../sections/AnalyticsSection";
 import { EarningsSection } from "../sections/EarningsSection";
-import { getCurrentUser, mockActivity, mockEarnings, mockAnalytics } from "../data/mockData";
+import { getCurrentUser } from "../data/mockData";
 
 export const CreatorDashboard = ({ section, onSection, onNavigate }) => {
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   
+  // Check if mobile on mount and when window resizes
   useEffect(() => {
-    // Get logged-in user from localStorage
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+      if (window.innerWidth > 768) {
+        setSidebarOpen(true); // Keep sidebar open on desktop
+      } else {
+        setSidebarOpen(false); // Close sidebar on mobile by default
+      }
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
     const user = getCurrentUser();
     setCurrentUser(user);
-    
     const timer = setTimeout(() => setLoading(false), 800);
     return () => clearTimeout(timer);
   }, []);
 
-  // Get user-specific data
   const getUserActivity = () => {
     if (currentUser?.name === "Tshepiso Malema") {
       return [
@@ -98,12 +114,33 @@ export const CreatorDashboard = ({ section, onSection, onNavigate }) => {
   const greeting = getGreeting();
   const userName = currentUser?.name?.split(' ')[0] || "Creator";
 
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
+  const closeSidebar = () => {
+    setSidebarOpen(false);
+  };
+
+  const handleSectionChange = (newSection) => {
+    onSection(newSection);
+    if (isMobile) {
+      closeSidebar();
+    }
+  };
+
   const content = {
     overview: (
       <div style={{ animation: "fadeUp .4s ease" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 28 }}>
-          <div>
-            <h1 style={{ fontFamily: "var(--font-display)", fontSize: 26, fontWeight: 800, marginBottom: 4 }}>
+        <div style={{ 
+          display: "flex", 
+          flexDirection: "column", 
+          gap: 16,
+          marginBottom: 28,
+          alignItems: "flex-start"
+        }}>
+          <div style={{ width: "100%" }}>
+            <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 5vw, 26px)", fontWeight: 800, marginBottom: 4 }}>
               {greeting}, {userName} 👋
             </h1>
             <p style={{ color: "var(--muted)", fontSize: 14 }}>
@@ -115,43 +152,21 @@ export const CreatorDashboard = ({ section, onSection, onNavigate }) => {
           </Button>
         </div>
         
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16, marginBottom: 28 }}>
-          <StatCard 
-            label="Total Earnings" 
-            value={metrics.totalEarnings} 
-            delta={metrics.earningsDelta} 
-            icon="dollar" 
-            loading={loading} 
-          />
-          <StatCard 
-            label="Monthly Views" 
-            value={metrics.monthlyViews} 
-            delta={metrics.viewsDelta} 
-            icon="eye" 
-            color="#3B82F6" 
-            loading={loading} 
-          />
-          <StatCard 
-            label="Active Campaigns" 
-            value={metrics.activeCampaigns} 
-            delta={metrics.campaignsDelta} 
-            icon="briefcase" 
-            color="#8B5CF6" 
-            loading={loading} 
-          />
-          <StatCard 
-            label="Engagement Rate" 
-            value={metrics.engagementRate} 
-            delta={metrics.engagementDelta} 
-            icon="trending" 
-            color="#10B981" 
-            loading={loading} 
-          />
+        <div style={{ 
+          display: "grid", 
+          gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", 
+          gap: 16, 
+          marginBottom: 28 
+        }}>
+          <StatCard label="Total Earnings" value={metrics.totalEarnings} delta={metrics.earningsDelta} icon="dollar" loading={loading} />
+          <StatCard label="Monthly Views" value={metrics.monthlyViews} delta={metrics.viewsDelta} icon="eye" color="#3B82F6" loading={loading} />
+          <StatCard label="Active Campaigns" value={metrics.activeCampaigns} delta={metrics.campaignsDelta} icon="briefcase" color="#8B5CF6" loading={loading} />
+          <StatCard label="Engagement Rate" value={metrics.engagementRate} delta={metrics.engagementDelta} icon="trending" color="#10B981" loading={loading} />
         </div>
         
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 20 }}>
           <div className="card">
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 8 }}>
               <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 16 }}>Recent Activity</h3>
               <Badge variant="gold">{activity.length} new</Badge>
             </div>
@@ -179,7 +194,7 @@ export const CreatorDashboard = ({ section, onSection, onNavigate }) => {
           </div>
           
           <div className="card">
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 8 }}>
               <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 16 }}>Profile Strength</h3>
               <span style={{ fontSize: 22, fontWeight: 800, fontFamily: "var(--font-display)", color: "var(--gold-dark)" }}>
                 {currentUser?.name === "Tshepiso Malema" ? "85%" : currentUser?.name === "Lesley Zibu" ? "78%" : "45%"}
@@ -217,13 +232,13 @@ export const CreatorDashboard = ({ section, onSection, onNavigate }) => {
     marketplace: <MarketplacePage onNavigate={onNavigate} />,
     "ai-tools": <AIToolsPage />,
     analytics: <AnalyticsSection />,
-   earnings: <EarningsSection onNavigate={onNavigate} />
+    earnings: <EarningsSection onNavigate={onNavigate} />
   };
 
   if (!currentUser) {
     return (
-      <div style={{ display: "flex", minHeight: "100vh", background: "var(--surface)", alignItems: "center", justifyContent: "center" }}>
-        <div className="card" style={{ textAlign: "center", padding: 48 }}>
+      <div style={{ display: "flex", minHeight: "100vh", background: "var(--surface)", alignItems: "center", justifyContent: "center", padding: 16 }}>
+        <div className="card" style={{ textAlign: "center", padding: "clamp(24px, 6vw, 48px)" }}>
           <Icon name="loader" size={48} color="var(--gold)" />
           <h2 style={{ marginTop: 20 }}>Loading your profile...</h2>
         </div>
@@ -232,11 +247,99 @@ export const CreatorDashboard = ({ section, onSection, onNavigate }) => {
   }
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", background: "var(--surface)" }}>
-      <Sidebar role="creator" activeSection={section} onSection={onSection} onNavigate={onNavigate} />
-      <main style={{ flex: 1, marginLeft: 240, padding: "40px 36px", maxWidth: "calc(100vw - 240px)" }}>
-        {content[section] || content.overview}
-      </main>
+  <div style={{ display: "flex", minHeight: "100vh", background: "var(--surface)", position: "relative" }}>
+    {/* Mobile Menu Button */}
+    {isMobile && (
+      <button
+        onClick={toggleSidebar}
+        style={{
+          position: "fixed",
+          top: "16px",
+          left: "16px",
+          zIndex: 1001,
+          background: "var(--gold)",
+          border: "none",
+          borderRadius: "12px",
+          width: "44px",
+          height: "44px",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+        }}
+        aria-label="Menu"
+      >
+        <Icon name="menu" size={20} color="var(--ink)" />
+      </button>
+    )}
+
+    {/* Overlay */}
+    {isMobile && sidebarOpen && (
+      <div
+        onClick={closeSidebar}
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: "rgba(0,0,0,0.5)",
+          zIndex: 999,
+          animation: "fadeIn 0.3s ease",
+        }}
+      />
+    )}
+
+    {/* Sidebar */}
+    <div
+      style={{
+        position: isMobile ? "fixed" : "sticky",
+        top: 0,
+        left: 0,
+        height: "100vh",
+        width: "280px",
+        backgroundColor: "var(--surface)",
+        borderRight: "1px solid var(--border)",
+        transform: isMobile && !sidebarOpen ? "translateX(-100%)" : "translateX(0)",
+        transition: "transform 0.3s ease-in-out",
+        zIndex: 1000,
+        overflowY: "auto",
+        flexShrink: 0,
+      }}
+      className={isMobile && sidebarOpen ? "sidebar open" : "sidebar"}
+    >
+      <Sidebar 
+        role="creator" 
+        activeSection={section} 
+        onSection={handleSectionChange} 
+        onNavigate={onNavigate}
+        isMobile={isMobile}
+        onClose={closeSidebar}
+      />
     </div>
-  );
+
+    {/* Main Content */}
+    <main
+      style={{
+        flex: 1,
+        padding: isMobile ? "clamp(16px, 4vw, 24px)" : "clamp(24px, 4vw, 40px)",
+        width: "100%",
+        minWidth: 0,
+        marginTop: isMobile ? "60px" : "0",
+        marginLeft: isMobile ? 0 : "0",
+      }}
+    >
+      {content[section] || content.overview}
+    </main>
+    
+    {/* Add animations */}
+    <style>{`
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+    `}</style>
+  </div>
+);
 };

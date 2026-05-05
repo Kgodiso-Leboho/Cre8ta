@@ -193,6 +193,53 @@ select.input { cursor:pointer; }
   100% { transform: translateX(-33.33%); }
 }
 
+/* Mobile Responsive fixes for dashboard */
+@media (max-width: 768px) {
+  /* Fix StatCards on mobile */
+  .stat-card, [class*="StatCard"] {
+    padding: 16px !important;
+  }
+  
+  /* Make cards full width */
+  .card {
+    padding: 20px !important;
+  }
+  
+  /* Fix grid layouts */
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Smaller fonts on mobile */
+  h1, [style*="font-size: 26px"] {
+    font-size: 22px !important;
+  }
+  
+  /* Fix button widths */
+  button, .button {
+    width: auto !important;
+    min-width: 120px;
+  }
+  
+  /* Allow horizontal scroll for tables if needed */
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Tablet styles */
+@media (min-width: 769px) and (max-width: 1024px) {
+  main {
+    margin-left: 240px !important;
+    padding: 24px !important;
+  }
+  
+  [style*="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
 /* In src/styles/global.css, add: */
 .badge-orange { 
   background: rgba(255,107,53,.15); 

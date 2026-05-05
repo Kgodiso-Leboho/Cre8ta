@@ -2,7 +2,17 @@ import { useState, useEffect } from "react";
 import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/Input";
 import { Icon } from "../components/ui/Icon";
-import { mockUsers, mockBrands, getAllUsers, findUserByEmail, createUser } from "../data/mockData";
+import { 
+  mockUsers, 
+  mockBrands, 
+  getAllUsers, 
+  findUserByEmail, 
+  createUser, 
+  tshepisoUser, 
+  lesleyUser,
+  bathuBrand,      
+  galxboyBrand 
+} from "../data/mockData";
 
 export const AuthPage = ({ mode = "login", onNavigate }) => {
   const [step, setStep] = useState(mode === "register" ? 0 : 1);

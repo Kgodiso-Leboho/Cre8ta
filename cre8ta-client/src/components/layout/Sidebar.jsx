@@ -4,7 +4,7 @@ import { Avatar } from "../ui/Avatar";
 import { Badge } from "../ui/Badge";
 import { getCurrentUser } from "../../data/mockData";
 
-export const Sidebar = ({ role = "creator", activeSection, onSection, onNavigate }) => {
+export const Sidebar = ({ role = "creator", activeSection, onSection, onNavigate, isMobile = false, onClose }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [userName, setUserName] = useState("");
 
@@ -12,7 +12,6 @@ export const Sidebar = ({ role = "creator", activeSection, onSection, onNavigate
     const user = getCurrentUser();
     setCurrentUser(user);
     
-    // Set user name based on role and actual user
     if (user) {
       setUserName(user.name);
     } else if (role === "creator") {
@@ -41,22 +40,52 @@ export const Sidebar = ({ role = "creator", activeSection, onSection, onNavigate
   ];
   
   const links = role === "creator" ? creatorLinks : brandLinks;
-  
-  // Get badge variant based on role
   const badgeVariant = role === "creator" ? "pink" : "purple";
   const badgeLabel = role === "creator" ? "Creator" : "Brand";
-  
-  // Get avatar ring color based on user
   const hasRing = currentUser?.verified || role === "creator";
-  
+
+  const handleLinkClick = (linkId) => {
+    onSection(linkId);
+    // Close mobile sidebar if onClose function exists
+    if (onClose) {
+      onClose();
+    }
+  };
+
   return (
-    <aside className="sidebar">
+    <aside className="sidebar" style={{ 
+      height: "100%", 
+      display: "flex", 
+      flexDirection: "column",
+      background: "var(--surface)",
+      width: "100%"
+    }}>
       <div style={{ padding: "20px 16px 16px", borderBottom: "1px solid var(--border)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }} onClick={() => onNavigate("landing")}>
-          <div className="gold-gradient" style={{ width: 30, height: 30, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-            <Icon name="sparkle" size={14} color="#0D0D0D" />
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }} onClick={() => onNavigate("landing")}>
+            <div className="gold-gradient" style={{ width: 30, height: 30, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <Icon name="sparkle" size={14} color="#0D0D0D" />
+            </div>
+            <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 18 }}>Cre8ta</span>
           </div>
-          <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 18 }}>Cre8ta</span>
+          {/* Close button for mobile */}
+          {isMobile && onClose && (
+            <button
+              onClick={onClose}
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                padding: 8,
+                borderRadius: 8,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Icon name="close" size={18} color="var(--muted)" />
+            </button>
+          )}
         </div>
       </div>
       
@@ -68,12 +97,34 @@ export const Sidebar = ({ role = "creator", activeSection, onSection, onNavigate
           <div 
             key={link.id} 
             className={`sidebar-link ${activeSection === link.id ? "active" : ""}`}
-            onClick={() => onSection(link.id)} 
-            style={{ animation: "slideIn .3s ease both" }}
+            onClick={() => handleLinkClick(link.id)} 
+            style={{ 
+              animation: "slideIn .3s ease both",
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              padding: "10px 16px",
+              margin: "2px 8px",
+              borderRadius: 10,
+              cursor: "pointer",
+              transition: "all 0.2s",
+              background: activeSection === link.id ? "var(--gold)" : "transparent",
+              color: activeSection === link.id ? "var(--ink)" : "var(--muted)",
+              fontWeight: activeSection === link.id ? 600 : 500,
+            }}
+            onMouseEnter={(e) => {
+              if (activeSection !== link.id) {
+                e.currentTarget.style.background = "var(--surface-2)";
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (activeSection !== link.id) {
+                e.currentTarget.style.background = "transparent";
+              }
+            }}
           >
-            <Icon name={link.icon} size={16} />
-            <span>{link.label}</span>
-            <div className="nav-dot" />
+            <Icon name={link.icon} size={16} color={activeSection === link.id ? "var(--ink)" : "var(--muted)"} />
+            <span style={{ fontSize: 14 }}>{link.label}</span>
           </div>
         ))}
       </div>
@@ -82,7 +133,7 @@ export const Sidebar = ({ role = "creator", activeSection, onSection, onNavigate
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
           <Avatar 
             name={userName} 
-            image={currentUser?.avatar}  // Pass the user's avatar
+            image={currentUser?.avatar}
             size={36} 
             ring={hasRing} 
           />
@@ -93,9 +144,8 @@ export const Sidebar = ({ role = "creator", activeSection, onSection, onNavigate
         </div>
         <button 
           className="btn btn-ghost btn-sm" 
-          style={{ width: "100%", justifyContent: "center", gap: 6 }}
+          style={{ width: "100%", justifyContent: "center", gap: 6, padding: "8px 12px", cursor: "pointer" }}
           onClick={() => {
-            // Clear current user from localStorage
             localStorage.removeItem("cre8ta_current_user");
             onNavigate("landing");
           }}
