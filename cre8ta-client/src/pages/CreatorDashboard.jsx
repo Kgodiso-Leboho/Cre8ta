@@ -141,7 +141,7 @@ export const CreatorDashboard = ({ section, onSection, onNavigate }) => {
         }}>
           <div style={{ width: "100%" }}>
             <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 5vw, 26px)", fontWeight: 800, marginBottom: 4 }}>
-              {greeting}, {userName} 👋
+              {greeting}, {userName} 
             </h1>
             <p style={{ color: "var(--muted)", fontSize: 14 }}>
               Here's what's happening with your creator account.
@@ -307,7 +307,6 @@ export const CreatorDashboard = ({ section, onSection, onNavigate }) => {
         overflowY: "auto",
         flexShrink: 0,
       }}
-      className={isMobile && sidebarOpen ? "sidebar open" : "sidebar"}
     >
       <Sidebar 
         role="creator" 

@@ -1,10 +1,18 @@
+// src/components/layout/Sidebar.jsx
 import { useState, useEffect } from "react";
 import { Icon } from "../ui/Icon";
 import { Avatar } from "../ui/Avatar";
 import { Badge } from "../ui/Badge";
 import { getCurrentUser } from "../../data/mockData";
 
-export const Sidebar = ({ role = "creator", activeSection, onSection, onNavigate, isMobile = false, onClose }) => {
+export const Sidebar = ({ 
+  role = "creator", 
+  activeSection, 
+  onSection, 
+  onNavigate, 
+  isOpen = false,    
+  onClose = null     
+}) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [userName, setUserName] = useState("");
 
@@ -46,20 +54,14 @@ export const Sidebar = ({ role = "creator", activeSection, onSection, onNavigate
 
   const handleLinkClick = (linkId) => {
     onSection(linkId);
-    // Close mobile sidebar if onClose function exists
+    // Close sidebar on mobile after clicking a link
     if (onClose) {
       onClose();
     }
   };
 
   return (
-    <aside className="sidebar" style={{ 
-      height: "100%", 
-      display: "flex", 
-      flexDirection: "column",
-      background: "var(--surface)",
-      width: "100%"
-    }}>
+    <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
       <div style={{ padding: "20px 16px 16px", borderBottom: "1px solid var(--border)" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }} onClick={() => onNavigate("landing")}>
@@ -68,8 +70,8 @@ export const Sidebar = ({ role = "creator", activeSection, onSection, onNavigate
             </div>
             <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 18 }}>Cre8ta</span>
           </div>
-          {/* Close button for mobile */}
-          {isMobile && onClose && (
+          {/* Close button - only show on mobile when sidebar is open */}
+          {onClose && isOpen && (
             <button
               onClick={onClose}
               style={{
@@ -83,7 +85,7 @@ export const Sidebar = ({ role = "creator", activeSection, onSection, onNavigate
                 justifyContent: "center",
               }}
             >
-              <Icon name="close" size={18} color="var(--muted)" />
+              <Icon name="x" size={18} color="var(--muted)" />
             </button>
           )}
         </div>
@@ -111,16 +113,6 @@ export const Sidebar = ({ role = "creator", activeSection, onSection, onNavigate
               background: activeSection === link.id ? "var(--gold)" : "transparent",
               color: activeSection === link.id ? "var(--ink)" : "var(--muted)",
               fontWeight: activeSection === link.id ? 600 : 500,
-            }}
-            onMouseEnter={(e) => {
-              if (activeSection !== link.id) {
-                e.currentTarget.style.background = "var(--surface-2)";
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (activeSection !== link.id) {
-                e.currentTarget.style.background = "transparent";
-              }
             }}
           >
             <Icon name={link.icon} size={16} color={activeSection === link.id ? "var(--ink)" : "var(--muted)"} />
@@ -150,7 +142,7 @@ export const Sidebar = ({ role = "creator", activeSection, onSection, onNavigate
             onNavigate("landing");
           }}
         >
-          Log out
+          <Icon name="logout" size={14} /> Log out
         </button>
       </div>
     </aside>
