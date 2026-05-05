@@ -102,7 +102,7 @@ export const CreatorDashboard = ({ section, onSection, onNavigate }) => {
         {/* Header */}
         <div className="dash-header">
           <div>
-            <h1 className="dash-title">{greeting}, {userName} 👋</h1>
+            <h1 className="dash-title">{greeting}, {userName}</h1>
             <p style={{ color: "var(--muted)", fontSize: 14 }}>
               Here's what's happening with your creator account.
             </p>
