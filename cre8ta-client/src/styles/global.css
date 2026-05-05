@@ -182,15 +182,66 @@ select.input { cursor:pointer; }
   border-radius: inherit;
 }
 
-@media (max-width: 768px) {
-  .sidebar { transform:translateX(-100%); transition:transform .3s ease; }
-  .sidebar.open { transform:translateX(0); }
+/* In src/styles/global.css, add: */
+.badge-orange { 
+  background: rgba(255,107,53,.15); 
+  color: #E85D04; 
 }
 
-/* Infinite scroll animations */
-@keyframes scrollLeft {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-33.33%); }
+.sidebar {
+  width: 240px;
+  height: 100vh;           /* fixed height, not min-height */
+  background: var(--white);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  overflow-y: auto;        /* lets items scroll if screen is short */
+}
+ 
+.sidebar-link { display:flex; align-items:center; gap:10px; padding:10px 16px; border-radius:10px; font-size:14px; font-weight:500; color:var(--muted); cursor:pointer; transition:all .15s; margin:2px 8px; }
+.sidebar-link:hover { color:var(--gold); background:rgba(255,107,53,.08); }
+.sidebar-link.active { color:var(--white); background:var(--gold); }
+ 
+/* Backdrop — hidden on desktop, shown on mobile */
+.sidebar-backdrop {
+  display: none;
+}
+ 
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform .3s ease;
+    overflow-y: auto;        /* critical — allows items to be visible */
+  }
+ 
+  .sidebar.open {
+    transform: translateX(0);
+  }
+ 
+  .sidebar-backdrop {
+    display: block;          /* show on mobile when sidebar is open */
+  }
+ 
+  /* Main content takes full width on mobile */
+  .main-content {
+    margin-left: 0 !important;
+  }
+}
+
+/* Tablet styles */
+@media (min-width: 769px) and (max-width: 1024px) {
+  main {
+    margin-left: 240px !important;
+    padding: 24px !important;
+  }
+  
+  [style*="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
 }
 
 /* Mobile Responsive fixes for dashboard */
@@ -228,20 +279,13 @@ select.input { cursor:pointer; }
   }
 }
 
-/* Tablet styles */
-@media (min-width: 769px) and (max-width: 1024px) {
-  main {
-    margin-left: 240px !important;
-    padding: 24px !important;
-  }
-  
-  [style*="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))"] {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
+@media (max-width: 768px) {
+  .sidebar { transform:translateX(-100%); transition:transform .3s ease; }
+  .sidebar.open { transform:translateX(0); }
 }
 
-/* In src/styles/global.css, add: */
-.badge-orange { 
-  background: rgba(255,107,53,.15); 
-  color: #E85D04; 
+/* Infinite scroll animations */
+@keyframes scrollLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.33%); }
 }

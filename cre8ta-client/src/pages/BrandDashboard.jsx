@@ -10,11 +10,12 @@ import { DiscoverCreators } from "./DiscoverCreators";
 import { MarketplacePage } from "./MarketplacePage";
 import { CreateCampaignPage } from "./CreateCampaignPage";
 import { AnalyticsSection } from "../sections/AnalyticsSection";
-import { getCurrentUser, mockCampaigns, mockDiscoverCreators } from "../data/mockData";
+import { getCurrentUser, mockDiscoverCreators } from "../data/mockData";
 
 export const BrandDashboard = ({ section, onSection, onNavigate }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     const user = getCurrentUser();
@@ -22,12 +23,19 @@ export const BrandDashboard = ({ section, onSection, onNavigate }) => {
     setLoading(false);
   }, []);
 
-  // Check which brand is logged in
+  // Lock body scroll when mobile sidebar is open
+  useEffect(() => {
+    if (sidebarOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [sidebarOpen]);
+
   const isBathu = currentUser?.name === "Bathu";
   const isGalXBoy = currentUser?.name === "GalXBoy";
-  const isOtherBrand = currentUser?.role === "brand" && !isBathu && !isGalXBoy;
 
-  // Brand-specific campaigns
   const getBrandCampaigns = () => {
     if (isBathu) {
       return [
@@ -49,7 +57,6 @@ export const BrandDashboard = ({ section, onSection, onNavigate }) => {
     ];
   };
 
-  // Brand-specific top creator matches
   const getTopMatches = () => {
     if (isBathu) {
       return [
@@ -65,46 +72,17 @@ export const BrandDashboard = ({ section, onSection, onNavigate }) => {
       ];
     }
     return mockDiscoverCreators.slice(0, 3).map(c => ({
-      name: c.name,
-      niche: c.niche,
-      followers: c.followers,
-      rate: c.rate,
-      match: c.match
+      name: c.name, niche: c.niche, followers: c.followers, rate: c.rate, match: c.match
     }));
   };
 
-  // Brand-specific metrics
   const getBrandMetrics = () => {
     if (isBathu) {
-      return {
-        activeCampaigns: "3",
-        totalApplications: "95",
-        totalSpend: "R73K",
-        avgEngagement: "7.8%",
-        applicationsDelta: "+24",
-        spendDelta: "+18.2%",
-        engagementDelta: "+1.2%"
-      };
+      return { activeCampaigns: "3", totalApplications: "95", totalSpend: "R73K", avgEngagement: "7.8%", applicationsDelta: "+24", spendDelta: "+18.2%", engagementDelta: "+1.2%" };
     } else if (isGalXBoy) {
-      return {
-        activeCampaigns: "2",
-        totalApplications: "66",
-        totalSpend: "R33K",
-        avgEngagement: "8.2%",
-        applicationsDelta: "+18",
-        spendDelta: "+25.5%",
-        engagementDelta: "+1.5%"
-      };
+      return { activeCampaigns: "2", totalApplications: "66", totalSpend: "R33K", avgEngagement: "8.2%", applicationsDelta: "+18", spendDelta: "+25.5%", engagementDelta: "+1.5%" };
     }
-    return {
-      activeCampaigns: "2",
-      totalApplications: "42",
-      totalSpend: "R27K",
-      avgEngagement: "6.5%",
-      applicationsDelta: "+12",
-      spendDelta: "+15.3%",
-      engagementDelta: "+0.7%"
-    };
+    return { activeCampaigns: "2", totalApplications: "42", totalSpend: "R27K", avgEngagement: "6.5%", applicationsDelta: "+12", spendDelta: "+15.3%", engagementDelta: "+0.7%" };
   };
 
   const campaigns = getBrandCampaigns();
@@ -113,38 +91,45 @@ export const BrandDashboard = ({ section, onSection, onNavigate }) => {
   const brandName = currentUser?.name || "Brand";
   const greeting = new Date().getHours() < 12 ? "Good morning" : "Good afternoon";
 
+  const handleSectionChange = (newSection) => {
+    onSection(newSection);
+    setSidebarOpen(false);
+  };
+
   const content = {
     "brand-overview": (
       <div style={{ animation: "fadeUp .4s ease" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 28, flexWrap: "wrap", gap: 16 }}>
+        {/* Header */}
+        <div className="bdash-header">
           <div>
-            <h1 style={{ fontFamily: "var(--font-display)", fontSize: 26, fontWeight: 800, marginBottom: 4 }}>
-              {greeting}, {brandName}! 
-            </h1>
+            <h1 className="bdash-title">{greeting}, {brandName}!</h1>
             <p style={{ color: "var(--muted)", fontSize: 14 }}>Manage campaigns and discover South African talent.</p>
           </div>
-          <Button variant="gold" onClick={() => onSection("create-campaign")}>
+          <Button variant="gold" onClick={() => handleSectionChange("create-campaign")} size="sm">
             <Icon name="plus" size={16} /> New Campaign
           </Button>
         </div>
-        
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16, marginBottom: 28 }}>
+
+        {/* Stats Grid */}
+        <div className="bdash-stats-grid">
           <StatCard label="Active Campaigns" value={metrics.activeCampaigns} icon="briefcase" color="#8B5CF6" />
-          <StatCard label="Total Applications" value={metrics.totalApplications} delta={`+${metrics.applicationsDelta}`} icon="user" color="#FF006E" />
+          <StatCard label="Total Applications" value={metrics.totalApplications} delta={`+${metrics.applicationsDelta}`} icon="user" color="#FF6B35" />
           <StatCard label="Total Spend" value={metrics.totalSpend} delta={metrics.spendDelta} icon="dollar" color="#FFE600" />
           <StatCard label="Avg. Engagement" value={metrics.avgEngagement} delta={metrics.engagementDelta} icon="trending" color="#10B981" />
         </div>
-        
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 20 }}>
+
+        {/* Two-col cards */}
+        <div className="bdash-two-col">
+          {/* Active Campaigns */}
           <div className="card">
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 8 }}>
               <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 16 }}>Active Campaigns</h3>
-              <button className="btn btn-ghost btn-sm" onClick={() => onSection("campaigns")}>View all</button>
+              <button className="btn btn-ghost btn-sm" onClick={() => handleSectionChange("campaigns")}>View all</button>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {campaigns.map((c, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "center", gap: 16, padding: "14px 16px", borderRadius: 12, background: "var(--surface)", border: "1px solid var(--border)" }}>
-                  <div style={{ flex: 1 }}>
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 16, padding: "14px 16px", borderRadius: 12, background: "var(--surface)", border: "1px solid var(--border)", flexWrap: "wrap" }}>
+                  <div style={{ flex: 1, minWidth: 150 }}>
                     <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 4 }}>{c.title}</div>
                     <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                       <Badge variant={c.status === "active" ? "green" : c.status === "review" ? "gold" : "gray"}>{c.status}</Badge>
@@ -152,14 +137,15 @@ export const BrandDashboard = ({ section, onSection, onNavigate }) => {
                     </div>
                   </div>
                   <div style={{ textAlign: "right" }}>
-                    <div style={{ fontWeight: 600, fontSize: 14, color: "var(--neon-pink)" }}>{c.budget}</div>
+                    <div style={{ fontWeight: 600, fontSize: 14, color: "#FF6B35" }}>{c.budget}</div>
                     <div style={{ fontSize: 12, color: "var(--muted)" }}>{c.applications} apps</div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-          
+
+          {/* Top Matches */}
           <div className="card">
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 8 }}>
               <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 16 }}>Top Matches</h3>
@@ -167,28 +153,28 @@ export const BrandDashboard = ({ section, onSection, onNavigate }) => {
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
               {creators.map((c, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 0", borderBottom: i < creators.length - 1 ? "1px solid var(--border)" : "none" }}>
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 0", borderBottom: i < creators.length - 1 ? "1px solid var(--border)" : "none", flexWrap: "wrap" }}>
                   <Avatar name={c.name} size={38} />
-                  <div style={{ flex: 1 }}>
+                  <div style={{ flex: 1, minWidth: 120 }}>
                     <div style={{ fontWeight: 600, fontSize: 13 }}>{c.name}</div>
                     <div style={{ fontSize: 12, color: "var(--muted)" }}>{c.niche} · {c.followers}</div>
                   </div>
-                  <div style={{ background: "linear-gradient(135deg, rgba(255,0,110,0.15), rgba(131,56,236,0.15))", color: "#FF006E", fontSize: 12, fontWeight: 700, padding: "4px 10px", borderRadius: 8 }}>
+                  <div style={{ background: "linear-gradient(135deg, rgba(255,107,53,0.15), rgba(232,93,4,0.15))", color: "#FF6B35", fontSize: 12, fontWeight: 700, padding: "4px 10px", borderRadius: 8 }}>
                     {c.match}% Match
                   </div>
                 </div>
               ))}
-              <Button variant="ghost" size="sm" onClick={() => onSection("discover")} style={{ width: "100%", justifyContent: "center" }}>
+              <Button variant="ghost" size="sm" onClick={() => handleSectionChange("discover")} style={{ width: "100%", justifyContent: "center" }}>
                 <Icon name="search" size={14} /> Discover more creators
               </Button>
             </div>
           </div>
         </div>
 
-        {/* Quick Stats Section */}
-        <div style={{ marginTop: 24, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
+        {/* Quick Stats */}
+        <div className="bdash-quick-stats">
           <div className="card" style={{ textAlign: "center", padding: 20 }}>
-            <Icon name="users" size={24} color="#FF006E" />
+            <Icon name="users" size={24} color="#FF6B35" />
             <div style={{ fontSize: 24, fontWeight: 800, marginTop: 8 }}>{metrics.totalApplications}</div>
             <div style={{ fontSize: 12, color: "var(--muted)" }}>Total Applications Received</div>
           </div>
@@ -208,7 +194,7 @@ export const BrandDashboard = ({ section, onSection, onNavigate }) => {
     campaigns: <CampaignsList onNavigate={onNavigate} brand />,
     discover: <DiscoverCreators onNavigate={onNavigate} />,
     marketplace: <MarketplacePage onNavigate={onNavigate} />,
-    "create-campaign": <CreateCampaignPage onSection={onSection} />,
+    "create-campaign": <CreateCampaignPage onSection={handleSectionChange} />,
     analytics: <AnalyticsSection />,
   };
 
@@ -216,7 +202,7 @@ export const BrandDashboard = ({ section, onSection, onNavigate }) => {
     return (
       <div style={{ display: "flex", minHeight: "100vh", background: "var(--surface)", alignItems: "center", justifyContent: "center" }}>
         <div className="card" style={{ textAlign: "center", padding: 48 }}>
-          <Icon name="loader" size={48} color="#FF006E" />
+          <Icon name="loader" size={48} color="#FF6B35" />
           <h2 style={{ marginTop: 20 }}>Loading dashboard...</h2>
         </div>
       </div>
@@ -224,11 +210,174 @@ export const BrandDashboard = ({ section, onSection, onNavigate }) => {
   }
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", background: "var(--surface)" }}>
-      <Sidebar role="brand" activeSection={section} onSection={onSection} onNavigate={onNavigate} />
-      <main style={{ flex: 1, marginLeft: 240, padding: "40px 36px", maxWidth: "calc(100vw - 240px)" }}>
+    <div className="bdash-root">
+      {/* ── Mobile hamburger ── */}
+      <button
+        className="bdash-menu-btn"
+        onClick={() => setSidebarOpen(true)}
+        aria-label="Open menu"
+      >
+        <Icon name="menu" size={20} color="var(--white)" />
+      </button>
+
+      {/* ── Backdrop (mobile only) ── */}
+      {sidebarOpen && (
+        <div className="bdash-backdrop" onClick={() => setSidebarOpen(false)} />
+      )}
+
+      {/* ── Sidebar ── */}
+      <Sidebar
+        role="brand"
+        activeSection={section}
+        onSection={handleSectionChange}
+        onNavigate={onNavigate}
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
+
+      {/* ── Main content ── */}
+      <main className="bdash-main">
         {content[section] || content["brand-overview"]}
       </main>
+
+      <style>{`
+        .bdash-root {
+          display: flex;
+          min-height: 100vh;
+          background: var(--surface);
+        }
+
+        .bdash-main {
+          flex: 1;
+          margin-left: 240px;
+          padding: clamp(24px, 4vw, 40px);
+          min-width: 0;
+          width: 100%;
+        }
+
+        /* Hamburger — hidden on desktop */
+        .bdash-menu-btn {
+          display: none;
+        }
+
+        /* Backdrop — hidden on desktop */
+        .bdash-backdrop {
+          display: none;
+        }
+
+        .bdash-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 16px;
+          margin-bottom: 28px;
+          flex-wrap: wrap;
+        }
+        .bdash-title {
+          font-family: var(--font-display);
+          font-size: clamp(20px, 3vw, 28px);
+          font-weight: 800;
+          margin-bottom: 4px;
+        }
+
+        .bdash-stats-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 16px;
+          margin-bottom: 28px;
+        }
+
+        .bdash-two-col {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 20px;
+        }
+
+        .bdash-quick-stats {
+          margin-top: 24px;
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 16px;
+        }
+
+        /* ── Tablet ── */
+        @media (max-width: 1024px) {
+          .bdash-stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+          .bdash-quick-stats {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        /* ── Mobile ── */
+        @media (max-width: 768px) {
+          .bdash-main {
+            margin-left: 0;
+            padding: 72px 16px 24px;
+          }
+
+          .bdash-menu-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 200;
+            width: 44px;
+            height: 44px;
+            background: var(--gold);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,.2);
+          }
+
+          .bdash-backdrop {
+            display: block;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.45);
+            backdrop-filter: blur(3px);
+            z-index: 49;
+            animation: bdashFadeIn .2s ease;
+          }
+
+          .bdash-stats-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+          }
+
+          .bdash-two-col {
+            grid-template-columns: 1fr;
+          }
+
+          .bdash-quick-stats {
+            grid-template-columns: 1fr;
+          }
+
+          .bdash-header {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+        }
+
+        @media (max-width: 420px) {
+          .bdash-stats-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        @keyframes bdashFadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </div>
   );
 };
