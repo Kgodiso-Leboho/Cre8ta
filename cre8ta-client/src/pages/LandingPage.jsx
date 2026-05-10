@@ -79,7 +79,7 @@ export const LandingPage = ({ onNavigate }) => {
             </span>
           </h1>
           <p className="fade-up-2" style={{ fontSize: "clamp(16px,2.5vw,20px)", color: "var(--muted)", maxWidth: 560, margin: "0 auto 48px", lineHeight: 1.65 }}>
-            Cre8ta is the premium platform connecting South Africa's best content creators with world-class brands with AI tools, seamless payments, and zero friction.
+            Cre8ta is the premium platform connecting South Africa's best content creators with world-class brands — with AI tools, seamless payments, and zero friction.
           </p>
           <div className="fade-up-3" style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
             <Button variant="gold" size="lg" onClick={() => onNavigate("register")}>
