@@ -40,9 +40,30 @@ export const LandingPage = ({ onNavigate }) => {
   ];
 
   const testimonials = [
-    { name: "Tshepiso Malema", role: "Fashion Creator · 185K followers", text: "Cre8ta changed how I work with brands. I've done campaigns with Bathu and GalXBoy - all through the platform!", avatar: "TM", image: "https://randomuser.me/api/portraits/men/32.jpg", rating: 5 },
-    { name: "Lesley Zibu", role: "Lifestyle Creator · 142K followers", text: "The AI tools helped me write better captions and my engagement went up by 40%. Best decision I made!", avatar: "KL", image: "https://randomuser.me/api/portraits/women/44.jpg", rating: 5 },
-    { name: "Theo Baloyi", role: "Founder, Bathu", text: "We've found incredible creators through Cre8ta. The match rate and quality is unmatched.", avatar: "TB", image: "https://randomuser.me/api/portraits/men/91.jpg", rating: 5 },
+    {
+      name: "Tshepiso Malema",
+      handle: "@tshepiso_malema",
+      content: "Went from 12K → 185K followers in 90 days. Posted every single day on Cre8ta and collaborated with top SA brands.",
+      image: "https://randomuser.me/api/portraits/men/32.jpg",
+      metric: "+1400%",
+      metricLabel: "Follower Growth"
+    },
+    {
+      name: "Lesley Zibu",
+      handle: "@lesley_zibu",
+      content: "Cre8ta helped me land 5 brand deals in my first month. The AI tools save me hours of work every week.",
+      image: "https://randomuser.me/api/portraits/women/44.jpg",
+      metric: "5 Deals",
+      metricLabel: "In 30 Days"
+    },
+    {
+      name: "Theo Baloyi",
+      handle: "@bathu_sa",
+      content: "We've found our best creators through Cre8ta. The match rate is unmatched in the SA market.",
+      image: "https://randomuser.me/api/portraits/men/91.jpg",
+      metric: "R450K+",
+      metricLabel: "Campaign Spend"
+    }
   ];
 
   const platforms = ["TikTok", "YouTube", "Instagram", "Twitter", "LinkedIn", "Podcast"];
@@ -52,6 +73,8 @@ export const LandingPage = ({ onNavigate }) => {
     { value: "R2.4M+", label: "Paid Out", icon: "dollar" },
     { value: "94%", label: "Match Rate", icon: "trending" },
   ];
+
+  
 
   // Auto-rotate testimonials
   useEffect(() => {
@@ -69,8 +92,7 @@ export const LandingPage = ({ onNavigate }) => {
         <div style={{ position: "absolute", bottom: "10%", left: "5%", zIndex: 0, opacity: 0.6 }} className="hero-glow" />
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "80px 24px", textAlign: "center", zIndex: 1, position: "relative" }}>
           <div className="fade-up" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,107,53,.12)", border: "1px solid rgba(255,107,53,.3)", borderRadius: 100, padding: "6px 14px", marginBottom: 32 }}>
-            <Icon name="sparkle" size={14} color="var(--gold-dark)" />
-            <span style={{ fontSize: 13, fontWeight: 500, color: "var(--gold-dark)" }}>The creator economy, reimagined</span>
+            <span style={{ fontSize: 13, fontWeight: 500, color: "var(--gold-dark)" }}>South Africa's #1 Creator Platform</span>
           </div>
           <h1 className="fade-up-1" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(48px,8vw,88px)", fontWeight: 800, lineHeight: 1.0, letterSpacing: "-2px", color: "var(--ink)", marginBottom: 24 }}>
             Where Creators<br />
@@ -234,28 +256,37 @@ export const LandingPage = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* Testimonials Carousel */}
-      <section style={{ maxWidth: 1200, margin: "0 auto", padding: "100px 24px" }}>
-        <div style={{ textAlign: "center", marginBottom: 64 }}>
-          <Badge variant="gold" icon="star">Testimonials</Badge>
-          <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(32px,5vw,52px)", fontWeight: 800, letterSpacing: "-1.5px", marginTop: 16 }}>Loved by creators & brands</h2>
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 24 }}>
-          {testimonials.map((t, i) => (
-            <div key={i} className="card" style={{ position: "relative" }}>
-              <div style={{ display: "flex", gap: 4, marginBottom: 16 }}>
-                {[...Array(t.rating)].map((_, s) => <Icon key={s} name="star" size={14} color="var(--gold)" />)}
-              </div>
-              <p style={{ color: "var(--ink)", fontSize: 15, lineHeight: 1.75, marginBottom: 20, fontStyle: "italic" }}>"{t.text}"</p>
-              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <Avatar name={t.name} size={40} image={t.image} />
-                <div>
-                  <div style={{ fontSize: 14, fontWeight: 600 }}>{t.name}</div>
-                  <div style={{ fontSize: 12, color: "var(--muted)" }}>{t.role}</div>
+      {/* Testimonials Section */}
+      <section id="testimonials" style={{ padding: "80px 32px", background: "var(--surface)" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 48 }}>
+            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(28px, 5vw, 36px)", fontWeight: 700, marginBottom: 16 }}>
+              Trusted by South Africa's best creators
+            </h2>
+            <p style={{ color: "var(--muted)", fontSize: 16 }}>
+              Real stories from real creators who grew with Cre8ta
+            </p>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))", gap: 32 }}>
+            {testimonials.map((t, i) => (
+              <div key={i} className="card" style={{ padding: 28 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
+                  <img src={t.image} alt={t.name} style={{ width: 48, height: 48, borderRadius: "50%", objectFit: "cover" }} />
+                  <div>
+                    <div style={{ fontWeight: 600 }}>{t.name}</div>
+                    <div style={{ fontSize: 12, color: "var(--gold-dark)" }}>{t.handle}</div>
+                  </div>
+                </div>
+                <p style={{ fontSize: 15, lineHeight: 1.6, marginBottom: 16, fontStyle: "italic", color: "var(--ink)" }}>
+                  "{t.content}"
+                </p>
+                <div style={{ borderTop: "1px solid var(--border)", paddingTop: 16, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ fontSize: 12, color: "var(--muted)" }}>{t.metricLabel}</span>
+                  <span style={{ fontSize: 18, fontWeight: 700, color: "var(--gold-dark)" }}>{t.metric}</span>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
