@@ -8,11 +8,6 @@
 ## Live Demo
 
 **Frontend:** [https://kgodiso-leboho.github.io/Cre8ta/](https://kgodiso-leboho.github.io/Cre8ta/)
-
-**Test Credentials:**
-- **Creator:** `tshepiso@cre8ta.com` / `password123`
-- **Brand:** `collab@bathu.co.za` / `brand123`
-
 ---
 
 ## About The Project
