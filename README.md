@@ -1,4 +1,4 @@
-# Cre8ta - Creator & Brand Collaboration Platform
+# Cre8ta : Creator & Brand Collaboration Platform
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react)](https://reactjs.org/)
